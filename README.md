@@ -14,10 +14,13 @@ pyqt-5.9.2 (optional for GUI)<br>
 ### Install instructions
 The easiest way to install all required libraries for running the AutOP code, is by installing conda first and creating a conda environment.
 
+## Prepare Data
+Download all nescesery data from SAP and put the files in the appropiate folder. Detailed instructions are provided in the data folder.
+
 ## Running AutOP
 AutOP can be run with a light weight GUI or directly from a jupyter notebook.
 
-### run AutOP with GUI:
+### Run AutOP with GUI:
 
 activate enviroment<br>
 $ conda activate autop<br>
@@ -28,6 +31,6 @@ $ cd code/obf_autop<br>
 start AutOP with command<br>
 $ python AutOP.py<br>
 
-### run AutOP from jupyter notebook:
+### Run AutOP from jupyter notebook:
 
 open "jupyter notebook main_03.ipynb" and choose the right kernel.
