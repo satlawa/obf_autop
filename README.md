@@ -1,33 +1,33 @@
 # obf_autop
 Python script that creates a report out of SAP data.
 
-# Install
+## Install
 
-requirements:
-python 3.7.1
-numpy-1.15.4
-pandas-0.23.4
-matplotlib-3.0.1
-docx (install with pip)
-pyqt-5.9.2 (optional for GUI)
+requirements:<br>
+python 3.7.1<br>
+numpy-1.15.4<br>
+pandas-0.23.4<br>
+matplotlib-3.0.1<br>
+docx (install with pip)<br>
+pyqt-5.9.2 (optional for GUI)<br>
 
-## Install instructions
+### Install instructions
 The easiest way to install all required libraries for running the AutOP code, is by installing conda first and creating a conda environment.
 
-# Running AutOP
+## Running AutOP
 AutOP can be run with a light weight GUI or directly from a jupyter notebook.
 
-## run AutOP with GUI:
+### run AutOP with GUI:
 
-activate enviroment
-$ conda activate autop
+activate enviroment<br>
+$ conda activate autop<br>
+<br>
+navigate to the obf_autop folder<br>
+$ cd code/obf_autop<br>
+<br>
+start AutOP with command<br>
+$ python AutOP.py<br>
 
-navigate to the obf_autop folder
-$ cd code/obf_autop
-
-start AutOP with command
-$ python AutOP.py
-
-## run AutOP from jupyter notebook:
+### run AutOP from jupyter notebook:
 
 open "jupyter notebook main_03.ipynb" and choose the right kernel.
