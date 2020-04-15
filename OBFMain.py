@@ -50,54 +50,6 @@ class OBFMain(object):
     def run(self):
         version = '3.4'
 
-        path_dir = os.path.join(os.getcwd(), 'data', 'TO' + self.to_now)
-        path_dict = os.path.join(os.getcwd(), 'dict')
-
-        path_data = path_dir + '/to_' + self.to_now + '_sap.XLS'
-
-        path_hs = path_dir + '/to_' + self.to_now + '_hs_bilanz.XLS'
-
-        path_es_1 = path_dir + '/to_' + self.to_now + '_hs_bilanz_old.XLS'
-        es_all = pd.read_csv(path_es_1, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False)
-
-        path_alter = path_dir + '/to_' + self.to_now + '_bw_alter.xlsx'
-        path_neig = path_dir + '/to_' + self.to_now + '_bw_neig.xlsx'
-        path_seeh = path_dir + '/to_' + self.to_now + '_bw_seeh.xlsx'
-        path_uz = path_dir + '/to_' + self.to_now + '_bw_uz.xlsx'
-
-        path_zv_ze = path_dir + '/to_' + self.to_now + '_bw_zufaellige.xlsx'
-
-        path_wp = path_dir + '/to_' + self.to_now + '_bw_wp.xlsx'
-
-        path_natur = path_dir + '/to_' + self.to_now + '_sap_natur.XLS'
-
-        #path_spi = os.path.join(os.getcwd(), 'data', 'stichprobe', 'WZP_2017.xlsx')
-        path_spi = os.path.join(os.getcwd(), 'data', 'stichprobe', 'SPI_' + self.laufzeit_old[-4:] + '.txt')
-
-        path_klima = os.path.join(os.getcwd(), 'data', 'klima')
-
-        obf_text = OBFText()
-        obf_dic = OBFDictionary()
-        obf_fuc = OBFFunc(pd.read_csv(path_data, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
-        obf_hs = OBFHiebssatz(pd.read_csv(path_hs, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
-        obf_es = OBFEinschlag(es_all)
-        obf_es_hs = OBFEinschlagHiebsatz(pd.read_excel(path_alter), pd.read_excel(path_neig), pd.read_excel(path_seeh), pd.read_excel(path_uz))
-        obf_zv_ze = OBFSchadholz(pd.read_excel(path_zv_ze))
-        obf_wp = OBFWaldpflege(pd.read_excel(path_wp))
-        obf_klima = OBFKlima(pd.read_csv(path_klima + '/1_Lufttemperatur.txt', sep='\t', header=0), pd.read_csv(path_klima + '/2_Niederschlag.txt', sep='\t', header=0), pd.read_csv(path_klima + '/4_Schnee.txt', sep='\t', header=0))
-        obf_natur = OBFNatur(pd.read_csv(path_natur, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
-        #obf_spi = OBFSpi(pd.read_excel(path_spi))
-        obf_spi = OBFSpi(pd.read_csv(path_spi, sep='\t', encoding = "ISO-8859-1", decimal=',', thousands='.', skipinitialspace=True, skiprows=3))
-        obf_et = OBFEt(pd.read_excel(path_dict + '/Ertragstafelsets.xlsx', 'Baumarten'), obf_fuc.data[['Betriebsklasse', 'Ertragstafelnummer', 'Baumart_group']])
-
-        # set legendes
-        obf_text.set_legend(pd.read_excel(path_dict + '/key.xlsx', 'Dringlichkeit'), pd.read_excel(path_dict + '/key.xlsx', 'Bewilligung'), pd.read_excel(path_dict + '/key.xlsx', 'Nutzzeitpunkt'), pd.read_excel(path_dict + '/key.xlsx', 'Schlägerungsart'), pd.read_excel(path_dict + '/key.xlsx', 'Rückungsart'), pd.read_excel(path_dict + '/key.xlsx', 'Massnahmenart'), pd.read_excel(path_dict + '/key.xlsx', 'Exposition'), pd.read_excel(path_dict + '/key.xlsx', 'Standort'), pd.read_excel(path_dict + '/key.xlsx', 'ZE'), pd.read_excel(path_dict + '/key.xlsx', 'ZV'))
-        # set dictionary for natur
-        obf_natur.set_dic(path_dict + '/auswertekat_index.xlsx')
-
-        log = "0.1 load data - successful\n"
-        self.save_log(log)
-
         ukap_fleache = True
         kap_1_allg = True
         kap_2_haupt = True
@@ -119,9 +71,64 @@ class OBFMain(object):
         dat_es_hs = self.info_check[4:8]    # BW alter, neig, seeh, uz
         dat_zv_ze = self.info_check[8]      # BW zufällige
         dat_kima = False                    ### klima
-        dat_wpplan = True                  ### BW wpplan
+        dat_wpplan = False                  ### BW wpplan
         dat_natur = self.info_check[1]      # SAP natur
         dat_spi = self.info_check[9]        # SPI
+
+        path_dir = os.path.join(os.getcwd(), 'data', 'TO' + self.to_now)
+        path_dict = os.path.join(os.getcwd(), 'dict')
+
+        path_data = path_dir + '/to_' + self.to_now + '_sap.XLS'
+        obf_fuc = OBFFunc(pd.read_csv(path_data, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
+
+        if dat_hs == True:
+            path_hs = path_dir + '/to_' + self.to_now + '_hs_bilanz.XLS'
+            obf_hs = OBFHiebssatz(pd.read_csv(path_hs, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
+
+        if dat_es == True:
+            path_es_1 = path_dir + '/to_' + self.to_now + '_hs_bilanz_old.XLS'
+            es_all = pd.read_csv(path_es_1, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False)
+            obf_es = OBFEinschlag(es_all)
+
+        if dat_es_hs == True:
+            path_alter = path_dir + '/to_' + self.to_now + '_bw_alter.xlsx'
+            path_neig = path_dir + '/to_' + self.to_now + '_bw_neig.xlsx'
+            path_seeh = path_dir + '/to_' + self.to_now + '_bw_seeh.xlsx'
+            path_uz = path_dir + '/to_' + self.to_now + '_bw_uz.xlsx'
+            obf_es_hs = OBFEinschlagHiebsatz(pd.read_excel(path_alter), pd.read_excel(path_neig), pd.read_excel(path_seeh), pd.read_excel(path_uz))
+
+        if dat_zv_ze == True:
+            path_zv_ze = path_dir + '/to_' + self.to_now + '_bw_zufaellige.xlsx'
+            obf_zv_ze = OBFSchadholz(pd.read_excel(path_zv_ze))
+
+        if dat_wpplan == True:
+            path_wp = path_dir + '/to_' + self.to_now + '_bw_wp.xlsx'
+            obf_wp = OBFWaldpflege(pd.read_excel(path_wp))
+
+        if dat_natur == True:
+            path_natur = path_dir + '/to_' + self.to_now + '_sap_natur.XLS'
+            obf_natur = OBFNatur(pd.read_csv(path_natur, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
+            # set dictionary for natur
+            obf_natur.set_dic(path_dict + '/auswertekat_index.xlsx')
+
+        if dat_spi == True:
+            path_spi = os.path.join(os.getcwd(), 'data', 'stichprobe', 'SPI_' + self.laufzeit_old[-4:] + '.txt')
+            obf_spi = OBFSpi(pd.read_csv(path_spi, sep='\t', encoding = "ISO-8859-1", decimal=',', thousands='.', skipinitialspace=True, skiprows=3))
+
+        if dat_kima == True:
+            path_klima = os.path.join(os.getcwd(), 'data', 'klima')
+            obf_klima = OBFKlima(pd.read_csv(path_klima + '/1_Lufttemperatur.txt', sep='\t', header=0), pd.read_csv(path_klima + '/2_Niederschlag.txt', sep='\t', header=0), pd.read_csv(path_klima + '/4_Schnee.txt', sep='\t', header=0))
+
+        obf_text = OBFText()
+        obf_dic = OBFDictionary()
+
+        obf_et = OBFEt(pd.read_excel(path_dict + '/Ertragstafelsets.xlsx', 'Baumarten'), obf_fuc.data[['Betriebsklasse', 'Ertragstafelnummer', 'Baumart_group']])
+
+        # set legendes
+        obf_text.set_legend(pd.read_excel(path_dict + '/key.xlsx', 'Dringlichkeit'), pd.read_excel(path_dict + '/key.xlsx', 'Bewilligung'), pd.read_excel(path_dict + '/key.xlsx', 'Nutzzeitpunkt'), pd.read_excel(path_dict + '/key.xlsx', 'Schlägerungsart'), pd.read_excel(path_dict + '/key.xlsx', 'Rückungsart'), pd.read_excel(path_dict + '/key.xlsx', 'Massnahmenart'), pd.read_excel(path_dict + '/key.xlsx', 'Exposition'), pd.read_excel(path_dict + '/key.xlsx', 'Standort'), pd.read_excel(path_dict + '/key.xlsx', 'ZE'), pd.read_excel(path_dict + '/key.xlsx', 'ZV'))
+
+        log = "0.1 load data - successful\n"
+        self.save_log(log)
 
         # create old to text
 

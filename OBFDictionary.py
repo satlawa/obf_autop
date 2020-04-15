@@ -92,7 +92,7 @@ class OBFDictionary(object):
         elif self.fb == 180:
             self.dic_num_fr = {1:'Wald', 2:'Habach', 3:'Mühlbach', 4:'Mittersill', 5:'Stubach', 6:'Piesendorf', 7:'Bruck', 8:'Glemmtal', 9:'Alm', 10:'Saalfelden'}
         elif self.fb == 181:
-            self.dic_num_fr = {1:'Kössen', 2:'Fieberbrunn', 3:'Kitzbühel', 4:'Brixental', 5:'Gerlos', 6:'Hinteres Zillertal', 7:'Alpbach', 8:'Johannklause', 9:'Marchbach', 10:'Thiersee'}
+            self.dic_num_fr = {1:'Kössen', 2:'Fieberbrunn', 3:'Kitzbühel', 4:'Brixental', 5:'Gerlos', 6:'Hinteres Zillertal', 7:'Alpbach', 8:'Johannklause', 9:'Marchbach', 10:'Thiersee', 52:'Dielmann'}
         elif self.fb == 182:
             self.dic_num_fr = {1:'Steinberg', 2:'Achenwald-Bächental', 3:'Achensee', 4:'Hinterriß', 5:'Inntal', 6:'Reutte', 7:'Telfs', 8:'Landeck', 9:'Pfunds'}
 
