@@ -13,19 +13,8 @@
 3.7 Herkunftsgebiete und Höhenstufen - successful
 4.0 Besitzstand - successful
 5.1 Fläche und Vorrat nach Altersklassen - successful
+5.2 Vergleich der Vorräte im Wirtschaftswald, Taxation und Stichprobeninventur - successful
 5.3 Baumartenausstattung - successful
 5.4 Bonitätsverlauf der Baumarten (Mittlere Bonitäten der Baumarten nach Wüchsigkeitsgruppen) - successful
 5.5 Mittelwerte (Alter, Ertragsklasse, Bestockungsgrad) - successful
-5.7 Einteilung der Umtriebsgruppen - successful
-6.1.1 Einschlagsübersicht - successful
-6.1.4 Waldbauliche Beurteilung - successful
-6.2.1 Waldbaulicher Hiebssatz - successful
-6.2.2 Berechneter Hiebssatz - successful
-6.2.5 Vergleich Hiebssatz vergangene und aktuelle Periode - successful
-6.3.1 Waldbauliche Grundsätze - successful
-6.3.2 Nutzungsprofil - successful
-7.1.1 Waldbauliche Beurteilung - successful
-7.2.1 Bestandesbegründung | 7.2.2 Waldpflege - successful
-7.2.3 Erstdurchforstung - successful
-12.0 Anhang - successful
 

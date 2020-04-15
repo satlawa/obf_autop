@@ -36,8 +36,9 @@ from OBFDictionary import OBFDictionary
 # In[3]:
 class OBFMain(object):
 
-    def __init__(self, to_now, to_old, laufzeit_old, info_check):
+    def __init__(self, data_path, to_now, to_old, laufzeit_old, info_check):
 
+        self.data_path = data_path
         self.to_now = to_now
         self.to_old = to_old
         self.laufzeit_old = laufzeit_old
@@ -48,7 +49,7 @@ class OBFMain(object):
             print("{}".format(log), file=text_file)
 
     def run(self):
-        version = '3.4'
+        version = '3.5'
 
         ukap_fleache = True
         kap_1_allg = True
@@ -71,12 +72,12 @@ class OBFMain(object):
         dat_es_hs = self.info_check[4:8]    # BW alter, neig, seeh, uz
         dat_zv_ze = self.info_check[8]      # BW zufällige
         dat_kima = False                    ### klima
-        dat_wpplan = False                  ### BW wpplan
+        dat_wpplan = True                  ### BW wpplan
         dat_natur = self.info_check[1]      # SAP natur
         dat_spi = self.info_check[9]        # SPI
 
-        path_dir = os.path.join(os.getcwd(), 'data', 'TO' + self.to_now)
-        path_dict = os.path.join(os.getcwd(), 'dict')
+        path_dir = os.path.join(self.data_path, 'TO' + self.to_now)
+        path_dict = os.path.join(self.data_path, 'dict')
 
         path_data = path_dir + '/to_' + self.to_now + '_sap.XLS'
         obf_fuc = OBFFunc(pd.read_csv(path_data, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
@@ -90,7 +91,7 @@ class OBFMain(object):
             es_all = pd.read_csv(path_es_1, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False)
             obf_es = OBFEinschlag(es_all)
 
-        if dat_es_hs == True:
+        if all(dat_es_hs) == True:
             path_alter = path_dir + '/to_' + self.to_now + '_bw_alter.xlsx'
             path_neig = path_dir + '/to_' + self.to_now + '_bw_neig.xlsx'
             path_seeh = path_dir + '/to_' + self.to_now + '_bw_seeh.xlsx'
@@ -112,11 +113,11 @@ class OBFMain(object):
             obf_natur.set_dic(path_dict + '/auswertekat_index.xlsx')
 
         if dat_spi == True:
-            path_spi = os.path.join(os.getcwd(), 'data', 'stichprobe', 'SPI_' + self.laufzeit_old[-4:] + '.txt')
+            path_spi = os.path.join(self.data_path, 'stichprobe', 'SPI_' + self.laufzeit_old[-4:] + '.txt')
             obf_spi = OBFSpi(pd.read_csv(path_spi, sep='\t', encoding = "ISO-8859-1", decimal=',', thousands='.', skipinitialspace=True, skiprows=3))
 
         if dat_kima == True:
-            path_klima = os.path.join(os.getcwd(), 'data', 'klima')
+            path_klima = os.path.join(self.data_path, 'klima')
             obf_klima = OBFKlima(pd.read_csv(path_klima + '/1_Lufttemperatur.txt', sep='\t', header=0), pd.read_csv(path_klima + '/2_Niederschlag.txt', sep='\t', header=0), pd.read_csv(path_klima + '/4_Schnee.txt', sep='\t', header=0))
 
         obf_text = OBFText()
@@ -334,14 +335,16 @@ class OBFMain(object):
 
             table = obf_fuc.fuc_tbl_flaechen_sw()
 
-            # add paragraph
-            obf_doc.docx_paragraph_table('Flächenverteilung der Schutzwaldkategorien im FB ' + obf_fuc.dic.dic_num_fb[obf_fuc.dic.fb] + ', Teiloperat ' + str(obf_fuc.dic.to))
+            # if schutzwald existing, otherwise no print
+            if table.iloc[0,0] != 'empty':
+                # add paragraph
+                obf_doc.docx_paragraph_table('Flächenverteilung der Schutzwaldkategorien im FB ' + obf_fuc.dic.dic_num_fb[obf_fuc.dic.fb] + ', Teiloperat ' + str(obf_fuc.dic.to))
 
-            # add table
-            x = obf_doc.get_x('sw_flaechenuebersicht')
-            obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Schutzwald Flächenübersicht [ha]', font_size = 7, autofit = True)
-            obf_doc.doc.add_paragraph('')
-            #obf_doc.docx_table(table, Cm(2.2), Cm(2.2))
+                # add table
+                x = obf_doc.get_x('sw_flaechenuebersicht')
+                obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Schutzwald Flächenübersicht [ha]', font_size = 7, autofit = True)
+                obf_doc.doc.add_paragraph('')
+                #obf_doc.docx_table(table, Cm(2.2), Cm(2.2))
 
             # add section break
             new_section = obf_doc.doc.add_section(WD_SECTION.NEW_PAGE)
@@ -1189,7 +1192,7 @@ class OBFMain(object):
                 # set FR in obf_es_hs Class
                 obf_es_hs.set_fr(fr_name)
 
-                for j in ['Altersgruppe 1. Schicht', 'Neigungsgruppe (%)', 'Seehöhe', 'Umtriebszeit']:
+                for j in ['Altersgruppe 1. Schicht', 'Neigungsgruppe (%)', 'Seehöhen Gruppe', 'Umtriebszeit']:
 
                     print(j)
 
@@ -1832,7 +1835,7 @@ class OBFMain(object):
 
 
         # save the doc
-        path_save = os.path.join(os.getcwd(), 'operat_' + str(obf_fuc.dic.to) + '.docx')
+        path_save = os.path.join(data_path, 'operat_' + str(obf_fuc.dic.to) + '.docx')
         obf_doc.doc.save(path_save)
 
         log = log + "12.0 Anhang - successful\n"

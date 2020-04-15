@@ -282,77 +282,81 @@ class OBFFunc(object):
         # filter
         kategorie = kategorie[np.where( kategorie != 0 )]
         # sort
-        np.sort(kategorie)[::-1]
-        # find missing kategorien
-        kat_all = ['S', 'O', 'B']
-        kat_miss = list(set(kat_all).difference(kategorie.tolist()))
-        # make dic for sorting
-        dic_kat_order = {"I":0, "A":1, "All":2}
+        if kategorie:
+            np.sort(kategorie)[::-1]
+            # find missing kategorien
+            kat_all = ['S', 'O', 'B']
+            kat_miss = list(set(kat_all).difference(kategorie.tolist()))
+            # make dic for sorting
+            dic_kat_order = {"I":0, "A":1, "All":2}
 
-        y=[]
-        for i in kat_all:
+            y=[]
+            for i in kat_all:
 
-            if i in kategorie.tolist():
-                #print(i)
-                # make table
-                table = pd.pivot_table(self.data_wo_fl[(self.data_wo_fl['Bewirtschaftungsform']=='S') & (self.data_wo_fl['Schutzwaldkategorie']==i)], index=['Forstrevier'],columns = ['Ertragssituation'], \
-                                       values=['Fläche in HA'], \
-                                      aggfunc=np.sum, fill_value=0, margins=True)
-                # drop level
-                table.columns = table.columns.droplevel()
-                # sort by dic
-                table = pd.DataFrame(table, columns=sorted(dic_kat_order, key=dic_kat_order.get))
-                y.append(table)
-                #print(table)
+                if i in kategorie.tolist():
+                    #print(i)
+                    # make table
+                    table = pd.pivot_table(self.data_wo_fl[(self.data_wo_fl['Bewirtschaftungsform']=='S') & (self.data_wo_fl['Schutzwaldkategorie']==i)], index=['Forstrevier'],columns = ['Ertragssituation'], \
+                                           values=['Fläche in HA'], \
+                                          aggfunc=np.sum, fill_value=0, margins=True)
+                    # drop level
+                    table.columns = table.columns.droplevel()
+                    # sort by dic
+                    table = pd.DataFrame(table, columns=sorted(dic_kat_order, key=dic_kat_order.get))
+                    y.append(table)
+                    #print(table)
 
-            else:
-                print('else')
-                idx = pd.Index(self.data_wo_fl['Forstrevier'].unique().tolist() + ['All'])
-                table = pd.DataFrame(data={'A': [0], 'I': [0], 'All': [0]})
-                table = table.reindex(idx, fill_value=0)
-                table = pd.DataFrame(table, columns=sorted(dic_kat_order, key=dic_kat_order.get))
-                y.append(table)
-                #print(table)
+                else:
+                    print('else')
+                    idx = pd.Index(self.data_wo_fl['Forstrevier'].unique().tolist() + ['All'])
+                    table = pd.DataFrame(data={'A': [0], 'I': [0], 'All': [0]})
+                    table = table.reindex(idx, fill_value=0)
+                    table = pd.DataFrame(table, columns=sorted(dic_kat_order, key=dic_kat_order.get))
+                    y.append(table)
+                    #print(table)
 
-        # make table 'all'
-        table = pd.pivot_table(self.data_wo_fl[self.data_wo_fl['Bewirtschaftungsform']=='S'], index=['Forstrevier'],columns = ['Ertragssituation'], \
-                               values=['Fläche in HA'], \
-                              aggfunc=np.sum, fill_value=0, margins=True)
-        # drop level
-        table.columns = table.columns.droplevel()
+            # make table 'all'
+            table = pd.pivot_table(self.data_wo_fl[self.data_wo_fl['Bewirtschaftungsform']=='S'], index=['Forstrevier'],columns = ['Ertragssituation'], \
+                                   values=['Fläche in HA'], \
+                                  aggfunc=np.sum, fill_value=0, margins=True)
+            # drop level
+            table.columns = table.columns.droplevel()
 
-        # sort by dic
-        table = pd.DataFrame(table, columns=sorted(dic_kat_order, key=dic_kat_order.get))
-        y.append(table)
+            # sort by dic
+            table = pd.DataFrame(table, columns=sorted(dic_kat_order, key=dic_kat_order.get))
+            y.append(table)
 
-        #print(y)
+            #print(y)
 
-        table = pd.concat([y[0], y[1], y[2], y[3]], axis=1)
-        table = round(table,1)
+            table = pd.concat([y[0], y[1], y[2], y[3]], axis=1)
+            table = round(table,1)
 
-# precent
-        #table_pre = (table.div(table.iloc[:,-1], axis=0))*100
-        #table_pre = round(table_pre,0).astype(int)
+    # precent
+            #table_pre = (table.div(table.iloc[:,-1], axis=0))*100
+            #table_pre = round(table_pre,0).astype(int)
 
-        #table = self.fuc_concat_tables(table, table_pre)
+            #table = self.fuc_concat_tables(table, table_pre)
 
-        # rename columns
-        #table.columns = ['SS iE', 'SS iE %', 'SS aE', 'SS aE %' , 'SS', 'SS %', 'OS iE', 'OS iE %', \
-        #'OS aE', 'OS aE %' , 'OS', 'OS %', 'SW iE', 'SW iE %', 'SW aE', 'SW aE %' , 'SW', 'SW %']
+            # rename columns
+            #table.columns = ['SS iE', 'SS iE %', 'SS aE', 'SS aE %' , 'SS', 'SS %', 'OS iE', 'OS iE %', \
+            #'OS aE', 'OS aE %' , 'OS', 'OS %', 'SW iE', 'SW iE %', 'SW aE', 'SW aE %' , 'SW', 'SW %']
 
-        table.columns = ['in Ertrag', 'außer Ertrag', 'Ges.', 'in Ertrag', \
-        'außer Ertrag', 'Ges.', 'in Ertrag', 'außer Ertrag', 'Ges.', 'in Ertrag', 'außer Ertrag', 'Ges.']
-        table.rename(index={'All': 'TO'}, inplace=True)
+            table.columns = ['in Ertrag', 'außer Ertrag', 'Ges.', 'in Ertrag', \
+            'außer Ertrag', 'Ges.', 'in Ertrag', 'außer Ertrag', 'Ges.', 'in Ertrag', 'außer Ertrag', 'Ges.']
+            table.rename(index={'All': 'TO'}, inplace=True)
 
-        # sort
-        table = pd.DataFrame(table, index=sorted(self.dic.dic_fr_order, key=self.dic.dic_fr_order.get))
+            # sort
+            table = pd.DataFrame(table, index=sorted(self.dic.dic_fr_order, key=self.dic.dic_fr_order.get))
 
-        table.index.name = 'Forstrevier'
+            table.index.name = 'Forstrevier'
 
-        table = table.fillna(0)
+            table = table.fillna(0)
 
-        # get index inside data (for printing into docx)
-        table.reset_index(level=0, inplace=True)
+            # get index inside data (for printing into docx)
+            table.reset_index(level=0, inplace=True)
+
+        else:
+            table = pd.DataFrame(['empty'])
 
         return(table)
 
@@ -696,7 +700,7 @@ class OBFFunc(object):
         tableX.reset_index(level=0, inplace=True)
 
         # del index header (for printing into docx)
-        del tableX.index.name
+        #del tableX.index.name
 
         # filter just needed columns
         tableX = tableX[[cat, cat2]]

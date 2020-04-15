@@ -21,7 +21,7 @@ class OBFEinschlagHiebsatz(object):
         self.dic = OBFDictionary()
 
     def set_fr(self, fr):
-
+        print(fr)
         self.data_alter = self.data_alter[self.data_alter['Forstrevier'].isin(fr)]
         self.data_neig = self.data_neig[self.data_neig['Forstrevier'].isin(fr)]
         self.data_seeh = self.data_seeh[self.data_seeh['Forstrevier'].isin(fr)]
@@ -40,7 +40,7 @@ class OBFEinschlagHiebsatz(object):
     def plot_es_hs(self, filtery, filterx):
         '''
             filterz = 'alter', 'neigung', 'seehoehe', 'umtriebszeit'
-            filtery = ['Altersgruppe 1. Schicht', 'Neigungsgruppe (%)', 'Seehöhe', 'Umtriebszeit']
+            filtery = ['Altersgruppe 1. Schicht', 'Neigungsgruppe (%)', 'Seehöhen Gruppe', 'Umtriebszeit']
             filterx = ['Endnutzung', 'Vornutzung']
         '''
 
@@ -48,7 +48,7 @@ class OBFEinschlagHiebsatz(object):
             data = self.data_alter
         elif filtery == 'Neigungsgruppe (%)':
             data = self.data_neig
-        elif filtery == 'Seehöhe':
+        elif filtery == 'Seehöhen Gruppe':
             data = self.data_seeh
         elif filtery == 'Umtriebszeit':
             data = self.data_uz

@@ -120,6 +120,8 @@ class OBFHiebssatz(object):
         x = self.data[self.data['Forstrevier']==fr]
         y = x[['Betriebsklasse', 'Umtriebszeit', 'Bewirtschaftungsform', 'Ertragssituation', 'ENLH', 'ENNH', 'VNLH', 'VNNH', 'Summe']]
 
+        y.loc[:,('ENLH', 'ENNH', 'VNLH', 'VNNH', 'Summe')] = y.loc[:,('ENLH', 'ENNH', 'VNLH', 'VNNH', 'Summe')] * 10
+
         y.loc[:,'Bewirtschaftungsform'] = y.loc[:,'Bewirtschaftungsform'].replace(['S', 'SS'], 'SW')
         y.loc[:,'Bewirtschaftungsform'] = y.loc[:,'Bewirtschaftungsform'].replace(['W'], 'WW')
 
@@ -136,6 +138,6 @@ class OBFHiebssatz(object):
         z.iloc[-1,0] = 'Ges.'
 
         # mutiply all numbers with 10 -> dezennaler HS
-        z.ix[:,~np.in1d(z.dtypes,['object'])] *= 10
+        #z.ix[:,~np.in1d(z.dtypes,['object'])] *= 10
 
         return z

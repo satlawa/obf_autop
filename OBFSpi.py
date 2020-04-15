@@ -162,6 +162,7 @@ class OBFSpi(object):
         # concatonate tables
         table = pd.concat([table_all['Stz vor Ort'], table_ss['Stz vor Ort'], table_per['Stz vor Ort'], table_all['Vfm vor Ort'], table_ss['Vfm vor Ort'], table_per['Vfm vor Ort']], axis=1, sort=True)
 
+        table.fillna(value=0,inplace=True)
         # round, set to int
         table = round(table,0).astype(int).reset_index(level=0)
         table.columns = ['BHD [cm]', '[Stz vor Ort]', '[Stz vor Ort]', '[%]', '[Vfm vor Ort]', '[Vfm vor Ort]', '[%]']

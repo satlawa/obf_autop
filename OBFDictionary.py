@@ -51,8 +51,8 @@ class OBFDictionary(object):
         self.dic_avg_unit = {"Schichtalter":" [a]", "Ertragsklasse":" [Vfm/ha/a]", "BaumartenBestockgrad":""}
 
         # Einschlag vs Hiebsatz - headings and units
-        self.dic_es_hs_head = {"Altersgruppe 1. Schicht":"Alter", "Neigungsgruppe (%)":"Hangneigung", "Seehöhe":"Seehöhe", "Umtriebszeit":"Umtriebsgruppen"}
-        self.dic_es_hs_unit = {"Altersgruppe 1. Schicht":"Alter [a]", "Neigungsgruppe (%)":"Hangneigung [%]", "Seehöhe":"Seehöhe [m]", "Umtriebszeit":"Umtriebsgruppen [a]"}
+        self.dic_es_hs_head = {"Altersgruppe 1. Schicht":"Alter", "Neigungsgruppe (%)":"Hangneigung", "Seehöhen Gruppe":"Seehöhe", "Umtriebszeit":"Umtriebsgruppen"}
+        self.dic_es_hs_unit = {"Altersgruppe 1. Schicht":"Alter [a]", "Neigungsgruppe (%)":"Hangneigung [%]", "Seehöhen Gruppe":"Seehöhe [m]", "Umtriebszeit":"Umtriebsgruppen [a]"}
 
         # Nutzungs Legende
         self.dic_nutz_dring = {1:'Waldbaulich dringend notwendig (innerhalb von 3 Jahren)', 2:'Waldbaulich notwendig (innerhalb von 10 Jahren)', 3:'Waldbaulich nicht erforderlich (im Planungszeitraum möglich)', 4:'Erst nach Lösung der Wildfrage (nicht im Hiebssatz)', 5:'Erst nach erfolgter Aufschließung (im Hiebssatz)', 6:'Derzeit Nutzung ohne positiven DB I'}
