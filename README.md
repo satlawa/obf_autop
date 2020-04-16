@@ -1,14 +1,17 @@
 # obf_autop
+Version 3.5
 Python script that creates a report out of SAP data.
 
 ## Install
 
 requirements:<br>
-python 3.7.1<br>
-numpy-1.15.4<br>
-pandas-0.23.4<br>
+python 3.8.2<br>
+numpy-1.18.1<br>
+pandas-1.0.3<br>
 matplotlib-3.0.1<br>
-docx (install with pip)<br>
+openpyxl-3.1.3<br>
+xlrd-1.2.0<br>
+python-docx-0.8.10 (install with pip)<br>
 pyqt-5.9.2 (optional for GUI)<br>
 
 ### Install instructions
