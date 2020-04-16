@@ -33,7 +33,6 @@ from OBFText import OBFText
 from OBFDictionary import OBFDictionary
 
 
-# In[3]:
 class OBFMain(object):
 
     def __init__(self, data_path, to_now, to_old, laufzeit_old, info_check):
