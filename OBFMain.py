@@ -70,7 +70,7 @@ class OBFMain(object):
         dat_es = self.info_check[3]         # HS-Bilanz alt
         dat_es_hs = self.info_check[4:8]    # BW alter, neig, seeh, uz
         dat_zv_ze = self.info_check[8]      # BW zufällige
-        dat_kima = False                    ### klima
+        dat_kima = True                    ### klima
         dat_wpplan = True                  ### BW wpplan
         dat_natur = self.info_check[1]      # SAP natur
         dat_spi = self.info_check[9]        # SPI
