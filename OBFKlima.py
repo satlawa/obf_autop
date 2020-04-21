@@ -33,13 +33,15 @@ class OBFKlima(object):
         data = data.append(self.data_snow.iloc[31:33])
 
         table=[]
-        for i in stations:
-            table.append(data[i])
+        for station in stations:
+            if station in data.columns:
+                table.append(data[station])
         table = pd.concat(table, axis=1)
 
         table = table.T
         table = table.reset_index()
         table.columns = ['Station', 'Längengrad [°]', 'Breitengrad [°]', 'Seehöhe [m]', 'Jahresmitteltemperatur [°C]', 'Mittlerer Jahresniederschlag [mm]', 'max. Tagesniederschlag [mm]', 'Mittlere Anzahl der Tage mit min. 1 cm Schneedeckenhöhe [cm]', 'Mittlere Anzahl der Tage mit min. 20 cm Schneedeckenhöhe [cm]']
+        table.fillna('-', inplace=True)
 
         return(table)
 
@@ -60,8 +62,9 @@ class OBFKlima(object):
             titlex = 'max. monatl. Tagesniederschlag'
 
         table=[]
-        for i in stations:
-            table.append(data[i])
+        for station in stations:
+            if station in data.columns:
+                table.append(data[station])
         table = pd.concat(table, axis=1)
 
         # Create a figure of given size
@@ -96,8 +99,9 @@ class OBFKlima(object):
         data = data.iloc[31:33]
 
         table = []
-        for i in stations:
-            table.append(data[i])
+        for station in stations:
+            if station in data.columns:
+                table.append(data[station])
         table = pd.concat(table, axis=1)
 
         # Create a figure of given size

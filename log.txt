@@ -2,6 +2,7 @@
 0.2 Deckblatt - successful
 1.0 Allgemeines - successful
 2.1 Flächenübersicht - successful
+2.2 Hiebssätze im Jahrzehnt - successful
 2.3 Einforstung - successful
 2.4 Fläche und Vorrat nach Altersklassen - successful
 2.5 Baumarten - successful
@@ -25,6 +26,7 @@
 6.1.4 Waldbauliche Beurteilung - successful
 6.2.1 Waldbaulicher Hiebssatz - successful
 6.2.2 Berechneter Hiebssatz - successful
+6.2.3 Festgesetzter Hiebssatz - successful
 6.2.5 Vergleich Hiebssatz vergangene und aktuelle Periode - successful
 6.3.1 Waldbauliche Grundsätze - successful
 6.3.2 Nutzungsprofil - successful

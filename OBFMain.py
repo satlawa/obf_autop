@@ -35,13 +35,14 @@ from OBFDictionary import OBFDictionary
 
 class OBFMain(object):
 
-    def __init__(self, data_path, to_now, to_old, laufzeit_old, info_check):
+    def __init__(self, data_path, to_now, to_old, laufzeit_old, klima_stationen, info_check):
 
         self.data_path = data_path
         self.to_now = to_now
         self.to_old = to_old
         self.laufzeit_old = laufzeit_old
         self.info_check = info_check
+        self.klima_stationen = klima_stationen
 
     def save_log(self, log):
         with open("log.txt", "w") as text_file:
@@ -140,9 +141,6 @@ class OBFMain(object):
         self.to_old_text = self.to_old_text[:-2]
 
         obf_doc = OBFDocX(Document(path_dict + '/templet_xx.docx'))
-
-        #self.to_old = int(self.to_old)
-        klima_stationen = ['Muerzzuschlag','Reichenau an der Rax']
 
         #######################################################################################################################
         ###   0 Deckblatt
@@ -573,7 +571,7 @@ class OBFMain(object):
             if dat_kima:
                 try:
 
-                    stations = klima_stationen
+                    stations = self.klima_stationen
 
                     # add heading
                     obf_doc.doc.add_heading('Klimadaten', 3)
