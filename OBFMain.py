@@ -49,7 +49,7 @@ class OBFMain(object):
             print("{}".format(log), file=text_file)
 
     def run(self):
-        version = '3.5'
+        version = '3.6'
 
         ukap_fleache = True
         kap_1_allg = True
@@ -577,7 +577,7 @@ class OBFMain(object):
                     obf_doc.doc.add_heading('Klimadaten', 3)
                     print('Klimadiagramme')
 
-                    obf_doc.docx_paragraph_table('Klimanormalwerte (Periode 1981-2010) für relevante Stationen im Bereich des TO (Datenquelle: ZAMG, 2015)')
+                    obf_doc.docx_paragraph_table('Klimanormalwerte (Periode 1981-2010) für relevante Stationen im Bereich des TO, Tage mit min. 1 cm Schnee = Mittlere Anzahl der Tage mit mindestens 1 cm Schneedeckenhöhe, Tage mit min. 20 cm Schnee = Mittlere Anzahl der Tage mit mindestens 20 cm Schneedeckenhöhe (Datenquelle: ZAMG, 2015)')
                     table = obf_klima.fuc_tbl_climate(stations)
                     obf_doc.docx_table_x(table, Cm(1.2), Cm(1.2), header_rep = True, header = 'Klimadaten', font_size = 7, autofit = True)
                     obf_doc.doc.add_paragraph('')
@@ -589,22 +589,22 @@ class OBFMain(object):
                     obf_klima.fuc_plt_climate(stations, 'temp')
                     obf_doc.doc.add_picture('tempx.png')
                     # add Caption to figure
-                    obf_doc.docx_paragraph_figure('Monatsmitteltemperaturen (Periode 1981-2010) für relevante Stationen im Bereich des TO ' + str(obf_fuc.dic.to) + ' (Datenquelle: ZAMG 2015)')
+                    obf_doc.docx_paragraph_figure('Monatsmitteltemperaturen (Periode 1981-2010) für relevante Stationen im Bereich des TO ' + str(obf_fuc.dic.to) + ', (Datenquelle: ZAMG 2015)')
 
                     obf_klima.fuc_plt_climate(stations, 'prec_month')
                     obf_doc.doc.add_picture('tempx.png')
                     # add Caption to figure
-                    obf_doc.docx_paragraph_figure('Mittlerer Monatsniederschlag (Periode 1981-2010) für relevante Stationen im Bereich des TO ' + str(obf_fuc.dic.to) + ' (Datenquelle: ZAMG 2015)')
+                    obf_doc.docx_paragraph_figure('Mittlerer Monatsniederschlag (Periode 1981-2010) für relevante Stationen im Bereich des TO ' + str(obf_fuc.dic.to) + ', (Datenquelle: ZAMG 2015)')
 
                     obf_klima.fuc_plt_climate(stations, 'prec_day')
                     obf_doc.doc.add_picture('tempx.png')
                     # add Caption to figure
-                    obf_doc.docx_paragraph_figure('Maximaler monatlicher Tagesniederschlag (Periode 1981-2010) für relevante Stationen im Bereich des TO ' + str(obf_fuc.dic.to) + ' (Datenquelle: ZAMG 2015)')
+                    obf_doc.docx_paragraph_figure('Maximaler monatlicher Tagesniederschlag (Periode 1981-2010) für relevante Stationen im Bereich des TO ' + str(obf_fuc.dic.to) + ', (Datenquelle: ZAMG 2015)')
 
                     obf_klima.fuc_plt_climate_snow(stations)
                     obf_doc.doc.add_picture('tempx.png')
                     # add Caption to figure
-                    obf_doc.docx_paragraph_figure('Anzahl der Tage mit geschlossener Schneedecke (Periode 1981-2010) für relevante Stationen im Bereich des TO ' + str(obf_fuc.dic.to) + ' (Datenquelle: ZAMG 2015)')
+                    obf_doc.docx_paragraph_figure('Anzahl der Tage mit geschlossener Schneedecke (Periode 1981-2010) für relevante Stationen im Bereich des TO ' + str(obf_fuc.dic.to) + '; min 1cm = Mittlere Anzahl der Tage mit mindestens 1 cm Schneedeckenhöhe; min 20cm = Mittlere Anzahl der Tage mit mindestens 20 cm Schneedeckenhöhe; (Datenquelle: ZAMG 2015)')
 
                     obf_doc.doc.add_page_break()
                 except:

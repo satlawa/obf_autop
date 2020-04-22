@@ -40,7 +40,7 @@ class OBFKlima(object):
 
         table = table.T
         table = table.reset_index()
-        table.columns = ['Station', 'Längengrad [°]', 'Breitengrad [°]', 'Seehöhe [m]', 'Jahresmitteltemperatur [°C]', 'Mittlerer Jahresniederschlag [mm]', 'max. Tagesniederschlag [mm]', 'Mittlere Anzahl der Tage mit min. 1 cm Schneedeckenhöhe [cm]', 'Mittlere Anzahl der Tage mit min. 20 cm Schneedeckenhöhe [cm]']
+        table.columns = ['Station', 'Längengrad [°]', 'Breitengrad [°]', 'Seehöhe [m]', 'Jahresmitteltemperatur [°C]', 'Mittlerer Jahresniederschlag [mm]', 'max. Tagesniederschlag [mm]', 'Tage mit min. 1 cm Schnee', 'Tage mit min. 20 cm Schnee']
         table.fillna('-', inplace=True)
 
         return(table)
@@ -67,6 +67,9 @@ class OBFKlima(object):
                 table.append(data[station])
         table = pd.concat(table, axis=1)
 
+        # set x lables
+        table.set_index([pd.Index([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])], inplace=True)
+
         # Create a figure of given size
         fig = plt.figure(figsize=(6,3.8))
         # Add a subplot
@@ -75,7 +78,7 @@ class OBFKlima(object):
         table.plot(kind='line', ax=ax, stacked=False, alpha=0.9, title=titlex)
         ax.set_ylabel(filterx)
         ax.set_xlabel("Monat")
-        ax.set_xticklabels(ax.xaxis.get_majorticklabels(), rotation=45)
+        ax.xaxis.set_ticks(np.arange(1, 13, 1))
 
         # Remove plot frame on the right and upper spines
         ax.spines['right'].set_visible(False)
@@ -104,12 +107,15 @@ class OBFKlima(object):
                 table.append(data[station])
         table = pd.concat(table, axis=1)
 
+        # set x lables
+        table.set_index([pd.Index(['min 1cm', 'min 20cm'])], inplace=True)
+
         # Create a figure of given size
         fig = plt.figure(figsize=(6,3.8))
         # Add a subplot
         ax = fig.add_subplot(111)
         # plot
-        table.T.plot(kind='bar', ax=ax, stacked=False, alpha=0.9, title='Mittlere Anzahl der Tage mit min. 1 cm / 10 cm Schneedeckenhöhe')
+        table.T.plot(kind='bar', ax=ax, stacked=False, alpha=0.9, title='Mittlere Anzahl der Tage mit min. 1 cm / 20 cm Schneedeckenhöhe')
         ax.set_ylabel("Tage")
         ax.set_xticklabels(ax.xaxis.get_majorticklabels(), rotation=0)
 
