@@ -35,47 +35,114 @@ from OBFDictionary import OBFDictionary
 
 class OBFMain(object):
 
-    def __init__(self, data_path, to_now, to_old, laufzeit_old, klima_stationen, info_check):
+    def __init__(self, data_path, to_now, to_old, laufzeit_old, klima_stationen, do_sections):
 
         self.data_path = data_path
         self.to_now = to_now
         self.to_old = to_old
         self.laufzeit_old = laufzeit_old
-        self.info_check = info_check
+        self.do_sections = do_sections
         self.klima_stationen = klima_stationen
+        self.check_files_print()
+
 
     def save_log(self, log):
+        '''
+            save log
+        '''
         with open("log.txt", "w") as text_file:
             print("{}".format(log), file=text_file)
 
+
+    def check_files_print(self):
+        '''
+            check and print out if data files exist
+        '''
+        print('-----------------------------------------------------')
+        print('-                                                   -')
+        print('-                   files exist                     -')
+        print('-                                                   -')
+        print('-----------------------------------------------------')
+        print('SAP Rohdaten:       to_' + self.to_now + '_sap.XLS:             ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap.XLS'))))
+        print('SAP Ausertekat.:    to_' + self.to_now + '_sap_natur.XLS:       ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap_natur.XLS'))))
+        print('-----------------------------------------------------')
+        print('SAP HS-Bilanz neu:  to_' + self.to_now + '_hs_bilanz.XLS:       ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_hs_bilanz.XLS'))))
+        print('SAP HS-Bilanz alt:  to_' + self.to_now + '_hs_bilanz_old.XLS:   ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_hs_bilanz_old.XLS'))))
+        print('-----------------------------------------------------')
+        print('BW Alter:           to_' + self.to_now + '_bw_alter.xlsx:       ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_alter.xlsx'))))
+        print('BW Neigung:         to_' + self.to_now + '_bw_neig.xlsx:        ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_neig.xlsx'))))
+        print('BW Seehöhe:         to_' + self.to_now + '_bw_seeh.xlsx:        ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_seeh.xlsx'))))
+        print('BW Umtriebszeit:    to_' + self.to_now + '_bw_uz.xlsx:          ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_uz.xlsx'))))
+        print('BW Zufällige:       to_' + self.to_now + '_bw_zufaellige.xlsx:  ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_zufaellige.xlsx'))))
+        print('BW Waldpflege:      to_' + self.to_now + '_bw_wp.xlsx:          ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_wp.xlsx'))))
+        print('-----------------------------------------------------')
+        print('SAP Stichprobe:     SPI_' + self.laufzeit_old[5:] + '.txt:                ' + str(os.path.isfile(os.path.join(self.data_path, 'stichprobe', 'SPI_' + self.laufzeit_old[5:] + '.txt'))))
+        print('-----------------------------------------------------')
+        print('Klima Temperatur:   1_Lufttemperatur.txt:        ' + str(os.path.isfile(os.path.join(self.data_path, 'klima', '1_Lufttemperatur.txt'))))
+        print('Klima Niederschlag: 2_Niederschlag.txt:          ' + str(os.path.isfile(os.path.join(self.data_path, 'klima', '2_Niederschlag.txt'))))
+        print('Klima Schnee:       4_Schnee.txt:                ' + str(os.path.isfile(os.path.join(self.data_path, 'klima', '4_Schnee.txt'))))
+        print('-----------------------------------------------------')
+        print('Zusatz Dateien:     dict:                        ' + str(self.check_files_background()))
+        print('-----------------------------------------------------')
+
+
+    def check_files_background(self):
+        '''
+            check if necessary background files exist
+            out: boolean
+        '''
+        exists_1 = os.path.isfile(os.path.join(self.data_path, 'dict', '3_data_Standortseinheiten.xlsx'))
+        exists_2 = os.path.isfile(os.path.join(self.data_path, 'dict', '3_data_Wuchsgebiete.xlsx'))
+        exists_3 = os.path.isfile(os.path.join(self.data_path, 'dict', '3_data_Wuchsgebiete_hoehenstufen.xlsx'))
+        exists_4 = os.path.isfile(os.path.join(self.data_path, 'dict', '3_wuchsgebiete.png'))
+        exists_5 = os.path.isfile(os.path.join(self.data_path, 'dict', 'auswertekat_index.xlsx'))
+        exists_6 = os.path.isfile(os.path.join(self.data_path, 'dict', 'Ertragstafelsets.xlsx'))
+        exists_7 = os.path.isfile(os.path.join(self.data_path, 'dict', 'key.xlsx'))
+        exists_8 = os.path.isfile(os.path.join(self.data_path, 'dict', 'oebf.png'))
+        exists_9 = os.path.isfile(os.path.join(self.data_path, 'dict', 'templet_xx.docx'))
+        exists = exists_1 & exists_2 & exists_3 & exists_4 & exists_5 & exists_6 & exists_7 & exists_8 & exists_9
+
+        return exists
+
+
     def run(self):
-        version = '3.6'
+        '''
+            run program
+        '''
 
-        ukap_fleache = True
-        kap_1_allg = True
-        kap_2_haupt = True
-        kap_3_natgr = True
-        kap_4_besitz = True
-        kap_5_wald = True
-        kap_6_holze = True
-        kap_7_waldpf = True
-        kap_8_einf = True
-        kap_9_wirtb = True
-        kap_10_natur = True # true temp
-        kap_12_anhang = True
+        version = '3.7'
 
-        kap_wp = True
+        #-----------------------------------------------------------------------------------------
+        #--- check if data exists
+        #-----------------------------------------------------------------------------------------
+        # background data
+        if self.check_files_background() == False:
+            return('background data is missing, the TO could not be made')
+        # Taxationsdaten
+        dat_fuc = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap.XLS'))                # SAP roh
+        dat_natur = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_hs_bilanz.XLS'))        # SAP auswertekategorien
+        # Hiebssatzbilanz
+        dat_hs = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_hs_bilanz.XLS'))           # HS-Bilanz neu
+        dat_es = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_hs_bilanz_old.XLS'))       # HS-Bilanz alt
+        # Berichtswesen
+        dat_es_hs_1 = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_alter.xlsx'))      # BW alter
+        dat_es_hs_2 = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_neig.xlsx'))       # BW neigung
+        dat_es_hs_3 = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_seeh.xlsx'))       # BW seehoehe
+        dat_es_hs_4 = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_uz.xlsx'))         # BW umtriebszeit
+        dat_es_hs = dat_es_hs_1 & dat_es_hs_2 & dat_es_hs_3 & dat_es_hs_4
+        dat_zv_ze = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_zufaellige.xlsx'))   # BW zufällige
+        dat_wpplan = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_wp.xlsx'))          # BW waldpflegeplan
+        # SPI
+        dat_spi = os.path.isfile(os.path.join(self.data_path, 'stichprobe', 'SPI_' + self.laufzeit_old[5:] + '.txt'))               # SPI
+        # Klima
+        dat_kima_1 = os.path.isfile(os.path.join(self.data_path, 'klima', '1_Lufttemperatur.txt'))                                  # Klima
+        dat_kima_2 = os.path.isfile(os.path.join(self.data_path, 'klima', '2_Niederschlag.txt'))
+        dat_kima_3 = os.path.isfile(os.path.join(self.data_path, 'klima', '4_Schnee.txt'))
+        dat_kima = dat_kima_1 & dat_kima_2 & dat_kima_3
 
-        dat_fuc = self.info_check[0]        # SAP roh
-        dat_hs = self.info_check[2]         # HS-Bilanz neu
-        dat_es = self.info_check[3]         # HS-Bilanz alt
-        dat_es_hs = self.info_check[4:8]    # BW alter, neig, seeh, uz
-        dat_zv_ze = self.info_check[8]      # BW zufällige
-        dat_kima = True                    ### klima
-        dat_wpplan = True                  ### BW wpplan
-        dat_natur = self.info_check[1]      # SAP natur
-        dat_spi = self.info_check[9]        # SPI
-
+        #-----------------------------------------------------------------------------------------
+        #--- get data
+        #-----------------------------------------------------------------------------------------
         path_dir = os.path.join(self.data_path, 'TO' + self.to_now)
         path_dict = os.path.join(self.data_path, 'dict')
 
@@ -91,7 +158,7 @@ class OBFMain(object):
             es_all = pd.read_csv(path_es_1, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False)
             obf_es = OBFEinschlag(es_all)
 
-        if all(dat_es_hs) == True:
+        if dat_es_hs == True:
             path_alter = path_dir + '/to_' + self.to_now + '_bw_alter.xlsx'
             path_neig = path_dir + '/to_' + self.to_now + '_bw_neig.xlsx'
             path_seeh = path_dir + '/to_' + self.to_now + '_bw_seeh.xlsx'
@@ -220,7 +287,6 @@ class OBFMain(object):
         obf_doc.doc.add_paragraph('In folgenden Kapiteln gehören die fehlenden Informationen/Tabellen ergänzt:')
         obf_doc.doc.add_paragraph('1.1 Einteilung der Taxation (Tabelle)')
         obf_doc.doc.add_paragraph('2.3 Einforstung (Tabellen)')
-        obf_doc.doc.add_paragraph('3.4 Klima (Tabellen / Grafiken)')
         obf_doc.doc.add_paragraph('3.7 Herkunftsgebiete und Höhenstufen (Tabelle)')
         obf_doc.doc.add_paragraph('4.x Besitzstand (ganzes Kapitel)')
         obf_doc.doc.add_paragraph('6.1.4 Waldbauliche Beurteilung - Nutzungen (Text)')
@@ -257,7 +323,7 @@ class OBFMain(object):
         ###   1 Allgemeines
         #######################################################################################################################
 
-        if kap_1_allg == True:
+        if self.do_sections['1_Allgemeines'] == 1:
             try:
 
                 print('***   1 Allgemeines   ***')
@@ -303,7 +369,7 @@ class OBFMain(object):
         ###   2 Hauptergebnisse
         #######################################################################################################################
 
-        if kap_2_haupt == True:
+        if self.do_sections['2_Hauptergebnisse'] == 1:
 
             # add section break
             new_section = obf_doc.doc.add_section(WD_SECTION.NEW_PAGE)
@@ -361,7 +427,7 @@ class OBFMain(object):
             ###   2.2 Hiebssätze im Jahrzehnt
             ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
-            if dat_hs == 1:
+            if dat_hs == True:
                 try:
 
                     print('Hiebssätze im Jahrzehnt ' + obf_fuc.dic.laufzeit)
@@ -516,7 +582,7 @@ class OBFMain(object):
         ###   3 Natürliche Grundlagen
         #######################################################################################################################
 
-        if kap_3_natgr == True:
+        if self.do_sections['3_Natuerliche_Grundlagen'] == 1:
 
             print('***   3 Natürliche Grundlagen   ***')
             obf_doc.doc.add_heading('Natürliche Grundlagen', 1)
@@ -568,7 +634,7 @@ class OBFMain(object):
             obf_doc.doc.add_paragraph('')
 
             # # # check
-            if dat_kima:
+            if dat_kima == True:
                 try:
 
                     stations = self.klima_stationen
@@ -766,7 +832,7 @@ class OBFMain(object):
         ###   4 Besitzstand
         #######################################################################################################################
 
-        if kap_4_besitz == True:
+        if self.do_sections['4_Besitzstand'] == 1:
             try:
 
                 print('***   4 Besitzstand   ***')
@@ -827,7 +893,7 @@ class OBFMain(object):
         ###   5 Wald
         #######################################################################################################################
 
-        if kap_5_wald == True:
+        if self.do_sections['5_Wald'] == 1:
 
             print('***   5 Wald   ***')
             obf_doc.doc.add_heading('Wald', 1)
@@ -876,7 +942,7 @@ class OBFMain(object):
             ###   5.2 Vergleich der Vorräte im Wirtschaftswald, Taxation und Stichprobeninventur
             ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
-            if self.info_check[9] == 1:
+            if dat_spi == True:
                 try:
 
                     print('Stichprobeninventur')
@@ -1060,7 +1126,7 @@ class OBFMain(object):
             ###   5.6 Forstschäden
             ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
-            if self.info_check[9] == 1:
+            if dat_spi == True:
                 try:
 
                     print('Forstschaeden')
@@ -1184,7 +1250,7 @@ class OBFMain(object):
         ###   6 Holzernte
         #######################################################################################################################
 
-        if kap_6_holze == True:
+        if self.do_sections['6_Holzernte'] == 1:
 
             print('***   6 Holzernte   ***')
             obf_doc.doc.add_heading('Holzernte', 1)
@@ -1200,7 +1266,7 @@ class OBFMain(object):
             ###   6.1.1 Einschlagsübersicht
             ###-----------------------------------------------------------------------------------------------------------------###
 
-            if dat_es == 1:
+            if dat_es == True:
                 try:
 
                     obf_doc.doc.add_heading('Einschlagsübersicht', 3)
@@ -1248,7 +1314,7 @@ class OBFMain(object):
             ###   6.1.2 Vergleich Einschlag zu Hiebssatz
             ###-----------------------------------------------------------------------------------------------------------------###
 
-            if np.array_equal(dat_es_hs, np.ones(4)):
+            if dat_es_hs == True:
                 try:
 
                     obf_doc.doc.add_heading('Vergleich Einschlag zu Hiebssatz', 3)
@@ -1286,7 +1352,7 @@ class OBFMain(object):
             ###   6.1.3 Schadholz
             ###-----------------------------------------------------------------------------------------------------------------###
 
-            if dat_zv_ze == 1:
+            if dat_zv_ze == True:
                 try:
                     obf_doc.doc.add_heading('Schadholz', 3)
 
@@ -1453,7 +1519,7 @@ class OBFMain(object):
             obf_doc.doc.add_heading('Festgesetzter Hiebssatz', 3)
 
             # # # check
-            if dat_hs == 1:
+            if dat_hs == True:
                 try:
 
                     print('Hiebssätze FR')
@@ -1615,7 +1681,7 @@ class OBFMain(object):
         ###   7 Waldpflege
         #######################################################################################################################
 
-        if kap_7_waldpf == True:
+        if self.do_sections['7_Waldpflege'] == 1:
 
             print('***   7 Waldpflege   ***')
             obf_doc.doc.add_heading('Waldpflege', 1)
@@ -1773,7 +1839,7 @@ class OBFMain(object):
         ###   8 Einforstungen
         #######################################################################################################################
 
-        if kap_9_wirtb == True:
+        if self.do_sections['8_Einforstung'] == 1:
 
             print('***   8 Einforstung   ***')
 
@@ -1788,7 +1854,7 @@ class OBFMain(object):
         ###   9 Wirtschaftsbeschränkungen
         #######################################################################################################################
 
-        if kap_9_wirtb == True:
+        if self.do_sections['9_Wirtschaftsbeschraenkungen'] == 1:
             try:
 
                 print('***   9 Wirtschaftsbeschränkungen   ***')
@@ -1829,7 +1895,7 @@ class OBFMain(object):
         ###   10 Naturschutz
         #######################################################################################################################
 
-        if (dat_natur == 1) & (kap_10_natur == True):
+        if (dat_natur == True) & (self.do_sections['10_Naturschutz'] == 1):
             try:
 
                 print('***   10 Naturschutz   ***')
@@ -1911,19 +1977,21 @@ class OBFMain(object):
         ###   11 Vormerkungen für die nächste Forsteinrichtung
         #######################################################################################################################
 
-        print('***   11 Vormerkungen für die nächste Forsteinrichtung   ***')
+        if self.do_sections['11_Vormerkungen'] == 1:
 
-        obf_doc.doc.add_heading('Vormerkungen für die nächste Forsteinrichtung', 1)
-        obf_doc.doc.add_paragraph('*** Freier Text ***')
+            print('***   11 Vormerkungen für die nächste Forsteinrichtung   ***')
 
-        obf_doc.doc.add_page_break()
+            obf_doc.doc.add_heading('Vormerkungen für die nächste Forsteinrichtung', 1)
+            obf_doc.doc.add_paragraph('*** Freier Text ***')
+
+            obf_doc.doc.add_page_break()
 
 
         #######################################################################################################################
         ###   12 Anhang
         #######################################################################################################################
 
-        if kap_12_anhang == True:
+        if self.do_sections['12_Anhang'] == 1:
 
             print('***   12 Anhang   ***')
 
