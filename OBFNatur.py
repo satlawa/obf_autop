@@ -22,6 +22,7 @@ class OBFNatur(object):
 
         # save data in class
         self.data = data
+        self.data_merkmal = data[(data['Merkmalausprägung'] >= 51769) & (data['Merkmalausprägung'] <= 51771)].copy()
         # fill nan with 0
         #self.data = self.data.fillna(0)
 
@@ -52,6 +53,106 @@ class OBFNatur(object):
     def set_flaeche(self, data):
 
         self.tab_fl_ges = pd.pivot_table(data, values='Fläche in HA', index='Forstrevier', columns=None, aggfunc='sum', fill_value=0, margins=True,)
+
+
+    ###=========================================================================
+    ### 9 Schutzwalderhaltungszustand
+    ###=========================================================================
+
+    def fuc_tbl_plt_sez_ha(self):
+
+        # create pivot table
+        table = pd.pivot_table(self.data_merkmal, index=['Forstrevier'],columns = ['Merkmalausprägung'], \
+                           values=['Fläche in HA'], \
+                          aggfunc=np.sum, fill_value=0, margins=True)
+        # drop level
+        table.columns = table.columns.droplevel()
+
+        # rename
+        table.rename(index={'All': 'Ges.'}, inplace=True)
+        table.rename(columns={51769:'Grün', 51770:'Gelb', 51771:'Rot', 'All':'Ges.'}, inplace=True)
+
+        # deal with missing columns
+        df = pd.DataFrame(columns=['Grün', 'Gelb', 'Rot'])
+        table = pd.concat([df,table]).fillna(0)
+
+        # round
+        table = table.round(2)
+
+        return table
+
+
+    def fuc_tbl_sez_mass_ha(self, mass, fr):
+
+        # filter Massnahmengruppe
+        data_filtered = self.data_merkmal[self.data_merkmal['Massnahmengruppe'] == mass]
+
+        # filter FR
+        data_filtered = data_filtered[data_filtered['Forstrevier'] == fr]
+
+        # create pivot table
+        table = pd.pivot_table(data_filtered, index=['Maßnahmenart'],columns = ['Merkmalausprägung'], \
+                                   values=['Angriffsfläche'], \
+                                  aggfunc=np.sum, fill_value=0, margins=True)
+        # drop level
+        table.columns = table.columns.droplevel()
+
+        # rename
+        table.rename(index={'All': 'Ges.'}, inplace=True)
+        table.rename(columns={51769:'Grün', 51770:'Gelb', 51771:'Rot', 'All':'Ges.'}, inplace=True)
+
+        # deal with missing columns
+        df = pd.DataFrame(columns=['Grün', 'Gelb', 'Rot'])
+        table = pd.concat([df,table]).fillna(0)
+
+        # round
+        table = table.round(1)
+
+        return table
+
+
+    def fuc_tbl_sez_mass_v(self, mass, fr):
+
+        # filter Massnahmengruppe
+        data_filtered = self.data_merkmal[self.data_merkmal['Massnahmengruppe'] == mass]
+        print(data_filtered.shape)
+
+        # filter FR
+        data_filtered = data_filtered[data_filtered['Forstrevier'] == fr]
+        print(data_filtered.shape)
+
+        # create pivot table
+        table_v_lh = pd.pivot_table(data_filtered, index=['Rückungsart'],columns = ['Merkmalausprägung'], \
+                                   values=['Nutzung LH'], \
+                                  aggfunc=np.sum, fill_value=0, margins=True)
+
+        # create pivot table
+        table_v_nh = pd.pivot_table(data_filtered, index=['Rückungsart'],columns = ['Merkmalausprägung'], \
+                                   values=['Nutzung NH'], \
+                                  aggfunc=np.sum, fill_value=0, margins=True)
+
+        # drop level
+        table_v_lh.columns = table_v_lh.columns.droplevel()
+        table_v_nh.columns = table_v_nh.columns.droplevel()
+
+        # rename
+        table_v_lh.rename(index={'All': 'Ges.'}, inplace=True)
+        table_v_nh.rename(index={'All': 'Ges.'}, inplace=True)
+        table_v_lh.rename(columns={51769:'Grün', 51770:'Gelb', 51771:'Rot', 'All':'Ges.'}, inplace=True)
+        table_v_nh.rename(columns={51769:'Grün', 51770:'Gelb', 51771:'Rot', 'All':'Ges.'}, inplace=True)
+
+        # deal with missing columns
+        df = pd.DataFrame(columns=['Grün', 'Gelb', 'Rot'])
+        table_v_lh = pd.concat([df,table_v_lh]).fillna(0)
+        table_v_nh = pd.concat([df,table_v_nh]).fillna(0)
+
+        # concatonate dataframes
+        table_v = pd.concat([table_v_lh.loc[:,'Grün'], table_v_nh.loc[:,'Grün'], table_v_lh.loc[:,'Gelb'], table_v_nh.loc[:,'Gelb'], table_v_lh.loc[:,'Rot'], table_v_nh.loc[:,'Rot'], table_v_lh.loc[:,'Ges.'], table_v_nh.loc[:,'Ges.']], axis=1, sort=False)
+
+        table_v = table_v.round(0).astype(int)
+        table_v.columns = ['LH', 'NH', 'LH', 'NH', 'LH', 'NH', 'LH', 'NH', ]
+
+        return table_v
 
 
     ###=========================================================================
