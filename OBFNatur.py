@@ -74,7 +74,7 @@ class OBFNatur(object):
 
         # deal with missing columns
         df = pd.DataFrame(columns=['Grün', 'Gelb', 'Rot'])
-        table = pd.concat([df,table]).fillna(0)
+        table = pd.concat([df,table], sort=False).fillna(0)
 
         ## plot
 
@@ -88,8 +88,11 @@ class OBFNatur(object):
         table_pre.plot(kind='bar', stacked=True, ax=ax, width = 0.5, alpha=0.9, title='SW Erhaltungszustand', color=['#108112', '#FFCC2B', '#FC0D1B']) # '#FC0D1B', '#FDB32B', '#FFFD38', '#80DA29', '#108112'
         #edgecolor='white', (possible)
         ax.set_ylabel("Fläche [ha]")
+        ax.set_xlabel("Forstreviere")
 
         ax.set_xticklabels(ax.xaxis.get_majorticklabels(), rotation=0)
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
 
         # save plot to file
         plt.savefig('tempx.png', bbox_inches='tight', dpi=300)
@@ -101,6 +104,7 @@ class OBFNatur(object):
         # round
         table = table.round(2)
         table.reset_index(level=0, inplace=True)
+        table.rename(columns={'index':'Forstrevier'}, inplace=True)
 
         return table
 
@@ -110,8 +114,9 @@ class OBFNatur(object):
         # filter Massnahmengruppe
         data_filtered = self.data_merkmal[self.data_merkmal['Massnahmengruppe'] == mass]
 
-        # filter FR
-        data_filtered = data_filtered[data_filtered['Forstrevier'] == fr]
+        if fr > 0:
+            # filter FR
+            data_filtered = data_filtered[data_filtered['Forstrevier'] == fr]
 
         # create pivot table
         table = pd.pivot_table(data_filtered, index=['Maßnahmenart'],columns = ['Merkmalausprägung'], \
@@ -126,11 +131,12 @@ class OBFNatur(object):
 
         # deal with missing columns
         df = pd.DataFrame(columns=['Grün', 'Gelb', 'Rot'])
-        table = pd.concat([df,table]).fillna(0)
+        table = pd.concat([df,table], sort=False).fillna(0)
 
         # round
         table = table.round(1)
         table.reset_index(level=0, inplace=True)
+        table.rename(columns={'index':'Maßnahme'}, inplace=True)
 
         return table
 
@@ -139,11 +145,10 @@ class OBFNatur(object):
 
         # filter Massnahmengruppe
         data_filtered = self.data_merkmal[self.data_merkmal['Massnahmengruppe'] == mass]
-        print(data_filtered.shape)
 
-        # filter FR
-        data_filtered = data_filtered[data_filtered['Forstrevier'] == fr]
-        print(data_filtered.shape)
+        if fr > 0:
+            # filter FR
+            data_filtered = data_filtered[data_filtered['Forstrevier'] == fr]
 
         # create pivot table
         table_v_lh = pd.pivot_table(data_filtered, index=['Rückungsart'],columns = ['Merkmalausprägung'], \
@@ -167,8 +172,8 @@ class OBFNatur(object):
 
         # deal with missing columns
         df = pd.DataFrame(columns=['Grün', 'Gelb', 'Rot'])
-        table_v_lh = pd.concat([df,table_v_lh]).fillna(0)
-        table_v_nh = pd.concat([df,table_v_nh]).fillna(0)
+        table_v_lh = pd.concat([df,table_v_lh], sort=False).fillna(0)
+        table_v_nh = pd.concat([df,table_v_nh], sort=False).fillna(0)
 
         # concatonate dataframes
         table_v = pd.concat([table_v_lh.loc[:,'Grün'], table_v_nh.loc[:,'Grün'], \
@@ -183,6 +188,7 @@ class OBFNatur(object):
         table_v = table_v.round(0).astype(int)
         table_v.columns = ['LH', 'NH', 'Ges.', 'LH', 'NH', 'Ges.', 'LH', 'NH', 'Ges.', 'LH', 'NH', 'Ges.']
         table_v.reset_index(level=0, inplace=True)
+        table_v.rename(columns={'index':'MA'}, inplace=True)
 
         return table_v
 

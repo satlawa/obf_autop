@@ -494,6 +494,10 @@ class OBFDocX(object):
             x = [[0],[1,1,'Gesamt'],[2,2,'Schälschäden'],[3,3,'Anteil'],[4,4,'Gesamt'],[5,5,'Schälschäden'],[6,6,'Anteil']]
             y = [3,2,2,2,2,2,2]
 
+        if kind == 'Schutzwalderhaltungszustand':
+            x = [[0],[1,3,'Grün'],[4,6,'Gelb'],[7,9,'Rot'],[10,12,'Gesamt']]
+            y = [1.2,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5]
+
         if kind == 'natur':
             x = [[0],[1,1,extra],[2,2,'Anteil'],[3,3,'Gesamt']]
             y = [4,4,4,4]

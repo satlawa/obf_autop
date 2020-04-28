@@ -7,6 +7,5 @@
 2.5 Baumarten - successful
 2.6 Mittlere Ertragsklasse der Hauptbaumarten - successful
 9.0 Wirtschaftsbeschränkungen - successful
-9.2 Schutzwalderhaltungszustand - successful
 12.0 Anhang - successful
 
