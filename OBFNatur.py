@@ -76,8 +76,31 @@ class OBFNatur(object):
         df = pd.DataFrame(columns=['Grün', 'Gelb', 'Rot'])
         table = pd.concat([df,table]).fillna(0)
 
+        ## plot
+
+        # filter sum from column and index
+        table_pre = table.loc[table.index != 'Ges.', ['Grün', 'Gelb', 'Rot']]
+                # Create a figure of given size
+        fig = plt.figure(figsize=(6,3.8))
+        # Add a subplot
+        ax = fig.add_subplot(111)
+        # plot
+        table_pre.plot(kind='bar', stacked=True, ax=ax, width = 0.5, alpha=0.9, title='SW Erhaltungszustand', color=['#108112', '#FFCC2B', '#FC0D1B']) # '#FC0D1B', '#FDB32B', '#FFFD38', '#80DA29', '#108112'
+        #edgecolor='white', (possible)
+        ax.set_ylabel("Fläche [ha]")
+
+        ax.set_xticklabels(ax.xaxis.get_majorticklabels(), rotation=0)
+
+        # save plot to file
+        plt.savefig('tempx.png', bbox_inches='tight', dpi=300)
+        # clear plot
+        plt.clf()
+        plt.close()
+
+
         # round
         table = table.round(2)
+        table.reset_index(level=0, inplace=True)
 
         return table
 
@@ -107,6 +130,7 @@ class OBFNatur(object):
 
         # round
         table = table.round(1)
+        table.reset_index(level=0, inplace=True)
 
         return table
 
@@ -147,10 +171,18 @@ class OBFNatur(object):
         table_v_nh = pd.concat([df,table_v_nh]).fillna(0)
 
         # concatonate dataframes
-        table_v = pd.concat([table_v_lh.loc[:,'Grün'], table_v_nh.loc[:,'Grün'], table_v_lh.loc[:,'Gelb'], table_v_nh.loc[:,'Gelb'], table_v_lh.loc[:,'Rot'], table_v_nh.loc[:,'Rot'], table_v_lh.loc[:,'Ges.'], table_v_nh.loc[:,'Ges.']], axis=1, sort=False)
+        table_v = pd.concat([table_v_lh.loc[:,'Grün'], table_v_nh.loc[:,'Grün'], \
+                table_v_lh.loc[:,'Grün'] + table_v_nh.loc[:,'Grün'], \
+                table_v_lh.loc[:,'Gelb'], table_v_nh.loc[:,'Gelb'], \
+                table_v_lh.loc[:,'Gelb'] + table_v_nh.loc[:,'Gelb'], \
+                table_v_lh.loc[:,'Rot'], table_v_nh.loc[:,'Rot'], \
+                table_v_lh.loc[:,'Rot'] + table_v_nh.loc[:,'Rot'], \
+                table_v_lh.loc[:,'Ges.'], table_v_nh.loc[:,'Ges.'], \
+                table_v_lh.loc[:,'Ges.'] + table_v_nh.loc[:,'Ges.']], axis=1, sort=False)
 
         table_v = table_v.round(0).astype(int)
-        table_v.columns = ['LH', 'NH', 'LH', 'NH', 'LH', 'NH', 'LH', 'NH', ]
+        table_v.columns = ['LH', 'NH', 'Ges.', 'LH', 'NH', 'Ges.', 'LH', 'NH', 'Ges.', 'LH', 'NH', 'Ges.']
+        table_v.reset_index(level=0, inplace=True)
 
         return table_v
 

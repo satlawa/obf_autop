@@ -194,6 +194,7 @@ class OBFFunc(object):
 
         # replace 'Wüchsigkeit' numbers with text
         #data_stoe['Wuechsigkeit'].replace(dic_num_wuech, inplace=True)
+        self.sw = ['S'] in self.data['Bewirtschaftungsform'].unique()
 
 
     #***************************************************************************

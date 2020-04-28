@@ -2199,6 +2199,72 @@ class OBFText(object):
             p.add_run(') sowie Latschen- und Moorbirken-Bestände.')
 
 
+    def fuc_txt_sez_met_1(self, doc):
+
+        doc.add_paragraph('Im Rahmen der Schutzwaldstrategie der ÖBf AG (Stand: 22.10.2018) wird der Erhaltungszustand des Schutzwaldes im Zuge der Forsteinrichtung erhoben. Die Erhebung erfolgt bestandesweise in Anlehnung an die Jagdstrategie der ÖBf AG nach einem Ampelsystem.')
+
+        doc.add_paragraph('')
+        p = doc.add_paragraph('')
+        p.add_run('GRÜN: ').bold=True
+        p.add_run('Die Schutzwirkung ist für die nächsten 20 Jahre gegeben, es besteht kein unmittelbarer Handlungsbedarf. Der Schutzwald ist stabil, gut geschichtet, nicht überaltert, und/oder Naturverjüngung stellt sich ein.')
+
+        doc.add_paragraph('')
+        p = doc.add_paragraph('')
+        p.add_run('GELB: ').bold=True
+        p.add_run('Die Schutzwirkung ist noch gegeben, jedoch werden negative Entwicklungen sichtbar. Es besteht mittelbarer forstlicher/jagdlicher Handlungsbedarf innerhalb der nächsten 20 Jahre. Die Bestände beginnen zu überaltern, Strukturen lösen sich auf, Naturverjüngung stellt sich nicht im gewünschten Maß ein oder fällt aus.')
+
+        doc.add_paragraph('')
+        p = doc.add_paragraph('')
+        p.add_run('ROT: ').bold=True
+        p.add_run('Die Schutzwirkung nimmt zusehends ab. Mehrere negative Faktoren können wirksam werden. Es besteht Handlungsbedarf innerhalb der nächsten 10 Jahre. Überalterte Bestände lösen sich auf, ohne dass Verjüngung nachkommt, das Gelände ist schwierig, es bestehen Belastungen durch Wild und Weidevieh.')
+
+        doc.add_paragraph('')
+        doc.add_paragraph('In Vorbereitung zur Forsteinrichtung wurden vor der Einrichtungsperiode die bereits verfügbaren, fortgeschriebenen Manuale automatisiert auf Basis eines definierten Zahlenschlüssels bewertet. Dafür wird der folgende Schlüssel herangezogen.')
+
+
+    def fuc_txt_sez_met_2(self, doc):
+
+        doc.add_paragraph('In der Gesamtbewertung kann die Dringlichkeit der Schutzwaldverbesserung zwischen den Werten -5 bis +5 liegen. Für die Ampelphasen wurden folgende Grenzwerte festgelegt:')
+
+        doc.add_paragraph('')
+        p = doc.add_paragraph('', style='List Bullet')
+        p.add_run('GRÜN: ').bold=True
+        p.add_run('Dringlichkeit > 2')
+        p = doc.add_paragraph('', style='List Bullet')
+        p.add_run('GELB: ').bold=True
+        p.add_run('Dringlichkeit ≤ 2 und > -2')
+        p = doc.add_paragraph('', style='List Bullet')
+        p.add_run('ROT: ').bold=True
+        p.add_run('Dringlichkeit ≤ -2')
+
+        doc.add_paragraph('')
+        doc.add_paragraph('Während der FE soll in jedem Revier vom Forsteinrichter in enger Abstimmung mit dem Betrieb bzw. Revier die aktuelle Ausscheidung der Schutzwälder überprüft und nach dem oben dargestellten Ampelsystem nach Sanierungsdringlichkeit eingestuft werden. Davon ausgehend ergeben sich die jährlichen Planungen für die SW-Maßnahmen. Bei Ansprache der Kategorie „Rot“ (also dringlichem Handlungsbedarf) wurde eine unbedingte Maßnahmenplanung entsprechend der Schutzwaldverbesserung durchgeführt. Durch diese Vorgehensweise ist ein regelmäßiges Up-Date der Schutzwaldsituation durch die Forsteinrichtung bei den ÖBf gewährleistet.')
+
+        doc.add_paragraph('')
+        doc.add_paragraph('Maßnahmen, die nicht bestandesweise erhoben werden können, werden abschließend verbal beurteilt. Das betrifft vor allem den Einfluss von Wild, Weide und Käfer, der sich in der Regel nur an größeren Bereichen festmachen lässt.')
+
+
+    def fuc_txt_sez_wp(self, doc):
+
+        doc.add_paragraph('Der Waldpflegebedarf im Schutzwald mit dem Erhaltungszustand „Rot“ erstreckt sich zum größten Teil auf Aufforstungen (AF) und Ergänzungen (EG). Außerdem wurde, aufgrund der Wildschadenssituation ein entsprechender Anteil an Einzelschutzmaßnahmen gegen Wild (KE) geplant. Das FR 6 Hinteres Zillertal weist hier, aufgrund der umfangreichsten Fläche in dieser Kategorie den höchsten Anteil auf. Darüber hinaus wurde im FR 7 Alpbach, aufgrund der Weidebelastung, ein entsprechend hoher Anteil an flächigem Kulturschutz (KF) geplant. Die Maßnahmenplanung in der Kategorie „Rot“ ist als dringlich zu erachten.')
+        doc.add_paragraph('')
+        doc.add_paragraph('Flächen in deutlich besseren Zustand (Kategorie „Gelb“) weisen zusätzlich einen höheren Anteil an Jungwuchs- und Dickungspflegen (JP, DP) auf. Auch hier wurden Ergänzungen, Aufforstungen und Maßnahmen zum Kulturschutz geplant. Die Maßnahmenplanung in der Kategorie „Gelb“ sollte mittelfristig durchgeführt werden.')
+        doc.add_paragraph('')
+        doc.add_paragraph('Die Waldpflegemaßnahmen der Kategorie „Grün“ ergeben sich im Zuge einer entsprechenden Waldbewirtschaftung.')
+
+
+    def fuc_txt_sez_vn(self, doc):
+
+        doc.add_paragraph('Vornutzungen im Schutzwald wurden im Sinne der Stabilitäts- und Biodiversitätsförderung geplant. Außerdem ergaben sich Nutzungen im Schutzwald häufig in sinnvoller Kombination mit unterliegenden Nutzungen im Wirtschaftswald (Seil bergab). Im Erhaltungszustand „Rot“ können Vornutzungen meist, aufgrund des Alters keinen Beitrag mehr zum Erhalt des Schutzwaldzustandes leisten. Dahingegen stellen Vornutzungen in der Kategorie „Gelb“ einen wertvollen Beitrag zur zukünftigen Bestandesstabilität dar. Hier wurden Vornutzungseingriffe auch verstärkt zum Erhalt von wertvollen Mischbaumarten geplant. Vor allem im am stärksten mit Schutzwald ausgestatteten Revier, dem FR 6 Hinteres Zillertal können entsprechende Mengen realisiert werden..')
+        doc.add_paragraph('')
+        doc.add_paragraph('In der Nutzungsplanung nehmen naturgemäß seilgebundene Technologien eine zentrale Rolle ein. Sofern ein rechtzeitiger und sinnvoller Eingriff keinen positiven Deckungsbeitrag erwarten lässt, wurde die Maßnahme mit der Rückungsart 90 (Holz verbleibt am Waldort) geplant.')
+
+
+    def fuc_txt_sez_en(self, doc):
+
+        doc.add_paragraph('Vor allem in der Kategorie „Gelb“ stellen Nutzungen zur Verjüngungseinleitung- und -förderung, wie Lichtungen und Femelungen eine sinnvolle Maßnahme dar. Im Erhaltungszustand „Rot“ können Endnutzung zumeist keinen sinnvollen Beitrag zur Schutzwaldverbesserung leisten.')
+
+
     def fuc_txt_naturschutz(self, doc):
 
         doc.add_paragraph('Die ÖBf tragen besondere Verantwortung für den Erhalt natürlicher Ressourcen und Lebensräume Österreichs. Eine nachhaltige Bewirtschaftung der Flächen wird den wirtschaftlichen Erfordernissen gerecht und erhält ökologisch besonders wertvolle und sensible Gebiete. Im Projekt „Ökologie und Ökonomie“ wurden Strategien entwickelt, um sowohl den wirtschaftlichen als auch den ökologischen Anforderungen an das Flächenmanagement der ÖBf gerecht zu werden. Zur Berücksichtigung von naturschutzfachlichen Aspekten auf der gesamten Fläche der ÖBf wurde im Rahmen von „Ökologie und Ökonomie“ das vorliegende „Ökologische Landschaftsmanagement“ (Ö.L.) eingeführt.')

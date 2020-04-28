@@ -120,7 +120,7 @@ class OBFMain(object):
             return('background data is missing, the TO could not be made')
         # Taxationsdaten
         dat_fuc = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap.XLS'))                # SAP roh
-        dat_natur = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_hs_bilanz.XLS'))        # SAP auswertekategorien
+        dat_natur = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap_natur.XLS'))        # SAP auswertekategorien
         # Hiebssatzbilanz
         dat_hs = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_hs_bilanz.XLS'))           # HS-Bilanz neu
         dat_es = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_hs_bilanz_old.XLS'))       # HS-Bilanz alt
@@ -398,12 +398,12 @@ class OBFMain(object):
                 obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Flächenübersicht [ha]', font_size = 7, autofit = True)
                 obf_doc.doc.add_paragraph('')
 
-                obf_doc.doc.add_heading('Schutzwald', 3)
-
-                table = obf_fuc.fuc_tbl_flaechen_sw()
-
                 # if schutzwald existing, otherwise no print
-                if table.iloc[0,0] != 'empty':
+                if obf_fuc.sw:
+
+                    obf_doc.doc.add_heading('Schutzwald', 3)
+                    table = obf_fuc.fuc_tbl_flaechen_sw()
+
                     # add paragraph
                     obf_doc.docx_paragraph_table('Flächenverteilung der Schutzwaldkategorien im FB ' + obf_fuc.dic.dic_num_fb[obf_fuc.dic.fb] + ', Teiloperat ' + str(obf_fuc.dic.to))
 
@@ -1853,14 +1853,12 @@ class OBFMain(object):
         #######################################################################################################################
         ###   9 Wirtschaftsbeschränkungen
         #######################################################################################################################
+        print('***   9 Wirtschaftsbeschränkungen   ***')
 
-        if self.do_sections['9_Wirtschaftsbeschraenkungen'] == 1:
+        obf_doc.doc.add_heading('Wirtschaftsbeschränkungen', 1)
+
+        if (self.do_sections['9_Wirtschaftsbeschraenkungen'] == 1) & obf_fuc.sw:
             try:
-
-                print('***   9 Wirtschaftsbeschränkungen   ***')
-
-                obf_doc.doc.add_heading('Wirtschaftsbeschränkungen', 1)
-
                 for i in [['0','Schutzwald'],['S','Standortschutzwald'],['O','Objektschutzwald']]:
 
                     obf_doc.doc.add_heading(i[1], 2)
@@ -1880,7 +1878,6 @@ class OBFMain(object):
 
                 #if 'SAT' in
                 #obf_doc.doc.add_heading('Saatgutbestände', 2)
-
                 obf_doc.doc.add_page_break()
 
             except:
@@ -1889,6 +1886,110 @@ class OBFMain(object):
             else:
                 log = log + "9.0 Wirtschaftsbeschränkungen - successful\n"
                 self.save_log(log)
+
+####################################################################################################################
+            try:
+                print('***   9.2 Schutzwalderhaltungszustand   ***')
+
+                obf_doc.doc.add_heading('Schutzwalderhaltungszustand', 2)
+
+                obf_doc.doc.add_heading('Methodik', 3)
+                obf_doc.doc.add_paragraph('')
+
+                # add standard text
+                obf_text.fuc_txt_sez_met_1(obf_doc.doc)
+                obf_doc.doc.add_paragraph('')
+
+                #TODO add table 'Zahlenschlüssel'
+
+                # add standard text
+                obf_text.fuc_txt_sez_met_2(obf_doc.doc)
+                obf_doc.doc.add_paragraph('')
+
+                obf_doc.doc.add_heading('Ergebnisse', 3)
+                obf_doc.doc.add_paragraph('')
+
+                obf_doc.doc.add_heading('Erhaltungszustand', 4)
+                obf_doc.doc.add_paragraph('')
+
+                # get table
+                table = obf_natur.fuc_tbl_plt_sez_ha()
+
+                # add figure
+                obf_doc.doc.add_picture('tempx.png')
+
+                # add Caption to figure
+                obf_doc.docx_paragraph_figure('Schutzwalderhaltungszustand in Hektar in den Revieren. Grün = Schutzwirkung für die nächsten 20 Jahre gegeben; Gelb = Schutzwirkung noch gegeben, negative Entwicklungen sind sichtbar; Rot = Unmittelbarer Handlungsbedarf in den nächsten 10 Jahren.')
+
+                # add Caption to table
+                obf_doc.docx_paragraph_table('Schutzwalderhaltungszustand in Hektar in den Revieren und im Teiloperat ' + str(obf_fuc.dic.to) + '. Grün = Schutzwirkung für die nächsten 20 Jahre gegeben; Gelb = Schutzwirkung noch gegeben, negative Entwicklungen sind sichtbar; Rot = Unmittelbarer Handlungsbedarf in den nächsten 10 Jahren.')
+                # add table
+                #x = obf_doc.get_x('FR', obf_fuc.dic.fr, obf_fuc.dic.to)
+                #obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Schutzwalderhaltungszustand', font_size = 7, autofit = True)
+                obf_doc.docx_table_x(table, Cm(1.5), Cm(1.5), header_rep = True, header = 'Schutzwalderhaltungszustand', font_size = 7, autofit = True)
+                obf_doc.doc.add_paragraph('')
+                obf_doc.doc.add_page_break()
+
+                obf_doc.doc.add_heading('Maßnahmenplanung', 4)
+                obf_doc.doc.add_paragraph('')
+
+                for mass in ['WP', 'VN', 'EN']:
+
+                    if mass == 'WP':
+                        obf_doc.doc.add_heading(mass, 5)
+                        obf_doc.doc.add_paragraph('')
+
+                        obf_text.fuc_txt_sez_wp(obf_doc.doc)
+                        obf_doc.doc.add_paragraph('')
+
+                    elif mass == 'VN':
+                        obf_doc.doc.add_heading(mass, 5)
+                        obf_doc.doc.add_paragraph('')
+
+                        obf_text.fuc_txt_sez_vn(obf_doc.doc)
+                        obf_doc.doc.add_paragraph('')
+
+                    elif mass == 'EN':
+                        obf_doc.doc.add_heading(mass, 5)
+                        obf_doc.doc.add_paragraph('')
+
+                        obf_text.fuc_txt_sez_en(obf_doc.doc)
+                        obf_doc.doc.add_paragraph('')
+
+                    for fr in [5,6,7]:
+                        print(fr)
+
+                        table = obf_natur.fuc_tbl_sez_mass_ha(mass, fr)
+                        obf_doc.docx_paragraph_figure('Schutzwalderhaltungszustand')
+                        obf_doc.docx_table_x(table, Cm(1.5), Cm(1.5), header_rep = True, header = 'Schutzwalderhaltungszustand', font_size = 7, autofit = True)
+                        obf_doc.doc.add_paragraph('')
+
+                    if mass != 'WP':
+                        for fr in [5,6,7]:
+                            table = obf_natur.fuc_tbl_sez_mass_v(mass, fr)
+                            obf_doc.docx_paragraph_figure('Schutzwalderhaltungszustand')
+                            obf_doc.docx_table_x(table, Cm(1.5), Cm(1.5), header_rep = True, header = 'Schutzwalderhaltungszustand', font_size = 7, autofit = True)
+                            obf_doc.doc.add_paragraph('')
+
+                    obf_doc.doc.add_page_break()
+
+
+                #x = obf_doc.get_x('SW', obf_fuc.data_wo_fl[obf_fuc.data_wo_fl['Bewirtschaftungsform']=='S']['Ertragssituation'].unique(), obf_fuc.dic.to)
+                #obf_doc.docx_table_3x(table, x, header_rep = True, header = i[1] + 'fläche', font_size = 7, autofit = True)
+                #obf_doc.doc.add_paragraph('')
+
+                #if 'SAT' in
+                #obf_doc.doc.add_heading('Saatgutbestände', 2)
+
+                obf_doc.doc.add_page_break()
+
+            except:
+                log = log + "9.2 Schutzwalderhaltungszustand - error occured\n"
+                self.save_log(log)
+            else:
+                log = log + "9.2 Schutzwalderhaltungszustand - successful\n"
+                self.save_log(log)
+
 
 
         #######################################################################################################################
