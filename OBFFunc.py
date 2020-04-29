@@ -283,7 +283,7 @@ class OBFFunc(object):
         # filter
         kategorie = kategorie[np.where( kategorie != 0 )]
         # sort
-        if kategorie:
+        if kategorie.any():
             np.sort(kategorie)[::-1]
             # find missing kategorien
             kat_all = ['S', 'O', 'B']
@@ -1517,7 +1517,6 @@ class OBFFunc(object):
         table = pd.pivot_table(data, index=['Forstrevier'],columns = ['Ertragssituation'], \
                                        values=['Fläche in HA'], \
                                       aggfunc=np.sum, fill_value=0, margins=True)
-        print(table)
 
         # drop level
         table.columns = table.columns.droplevel()
@@ -1530,7 +1529,6 @@ class OBFFunc(object):
 
         # calc percentage
         table_pre = (table.div(table.iloc[-1,-1], axis=1))*100
-        print(table_pre)
 
         # round numbers
         table = table.round(1)

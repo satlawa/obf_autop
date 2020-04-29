@@ -110,7 +110,7 @@ class OBFMain(object):
             run program
         '''
 
-        version = '3.7'
+        version = '3.8'
 
         #-----------------------------------------------------------------------------------------
         #--- check if data exists
@@ -1859,6 +1859,10 @@ class OBFMain(object):
 
         if (self.do_sections['9_Wirtschaftsbeschraenkungen'] == 1) & obf_fuc.sw:
 
+            ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
+            ###   9.1 Schutzwaldtypen
+            ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
+
             try:
                 print('***   9.1 Schutzwaldtypen   ***')
                 obf_doc.doc.add_heading('Schutzwaldtypen', 2)
@@ -1873,9 +1877,6 @@ class OBFMain(object):
                     obf_doc.docx_paragraph_table(i[1] + 'fläche nach Ertragssituation in Hektar in den Revieren und im Teiloperat ' + str(obf_fuc.dic.to))
 
                     # add table
-
-                    ### fix cat Ertragssituation
-                    ### fix cat in -> obf_doc.get_x
                     x = obf_doc.get_x('SW', obf_fuc.data_wo_fl[obf_fuc.data_wo_fl['Bewirtschaftungsform']=='S']['Ertragssituation'].unique(), obf_fuc.dic.to)
                     obf_doc.docx_table_3x(table, x, header_rep = True, header = i[1] + 'fläche', font_size = 7, autofit = True)
                     obf_doc.doc.add_paragraph('')
@@ -1891,100 +1892,135 @@ class OBFMain(object):
                 log = log + "9.0 Wirtschaftsbeschränkungen - successful\n"
                 self.save_log(log)
 
-####################################################################################################################
-            #try:
-            print('***   9.2 Schutzwalderhaltungszustand   ***')
+            ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
+            ###   9.2 Schutzwalderhaltungszustand
+            ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
-            obf_doc.doc.add_heading('Schutzwalderhaltungszustand', 2)
+            try:
+                print('***   9.2 Schutzwalderhaltungszustand   ***')
 
-            obf_doc.doc.add_heading('Methodik', 3)
-            obf_doc.doc.add_paragraph('')
+                obf_doc.doc.add_heading('Schutzwalderhaltungszustand', 2)
 
-            # add standard text
-            obf_text.fuc_txt_sez_met_1(obf_doc.doc)
-            obf_doc.doc.add_paragraph('')
+                ###-----------------------------------------------------------------------------------------------------------------###
+                ###   9.2.1 Methodik
+                ###-----------------------------------------------------------------------------------------------------------------###
 
-            #TODO add table 'Zahlenschlüssel'
-
-            # add standard text
-            obf_text.fuc_txt_sez_met_2(obf_doc.doc)
-            obf_doc.doc.add_paragraph('')
-
-            obf_doc.doc.add_heading('Ergebnisse', 3)
-            obf_doc.doc.add_paragraph('')
-
-            obf_doc.doc.add_heading('Erhaltungszustand', 4)
-            obf_doc.doc.add_paragraph('')
-
-            # get table
-            table = obf_natur.fuc_tbl_plt_sez_ha()
-
-            # add figure
-            obf_doc.doc.add_picture('tempx.png')
-
-            # add Caption to figure
-            obf_doc.docx_paragraph_figure('Schutzwalderhaltungszustand in Hektar in den Revieren. Grün = Schutzwirkung für die nächsten 20 Jahre gegeben; Gelb = Schutzwirkung noch gegeben, negative Entwicklungen sind sichtbar; Rot = Unmittelbarer Handlungsbedarf in den nächsten 10 Jahren.')
-
-            # add Caption to table
-            obf_doc.docx_paragraph_table('Schutzwalderhaltungszustand in Hektar in den Revieren und im Teiloperat ' + str(obf_fuc.dic.to) + '. Grün = Schutzwirkung für die nächsten 20 Jahre gegeben; Gelb = Schutzwirkung noch gegeben, negative Entwicklungen sind sichtbar; Rot = Unmittelbarer Handlungsbedarf in den nächsten 10 Jahren.')
-            # add table
-            #x = obf_doc.get_x('FR', obf_fuc.dic.fr, obf_fuc.dic.to)
-            #obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Schutzwalderhaltungszustand', font_size = 7, autofit = True)
-            obf_doc.docx_table_x(table, Cm(3), Cm(3), header_rep = True, header = 'Schutzwalderhaltungszustand [ha]', font_size = 7, autofit = True)
-            obf_doc.doc.add_paragraph('')
-            obf_doc.doc.add_page_break()
-
-            obf_doc.doc.add_heading('Maßnahmenplanung', 4)
-            obf_doc.doc.add_paragraph('')
-
-            for mass in [['WP', 'Waldpflege'], ['VN', 'Vornutzung'], ['EN', 'Endnutzung']]:
-
-                obf_doc.doc.add_heading(mass[1], 5)
+                obf_doc.doc.add_heading('Methodik', 3)
                 obf_doc.doc.add_paragraph('')
 
-                if mass[0] == 'WP':
-                    obf_text.fuc_txt_sez_wp(obf_doc.doc)
-                elif mass[0] == 'VN':
-                    obf_text.fuc_txt_sez_vn(obf_doc.doc)
-                elif mass[0] == 'EN':
-                    obf_text.fuc_txt_sez_en(obf_doc.doc)
-
+                # add standard text
+                obf_text.fuc_txt_sez_met_1(obf_doc.doc)
                 obf_doc.doc.add_paragraph('')
 
-                for fr in obf_fuc.loop_fr():
-                    print(fr)
+                # add Caption to table
+                obf_doc.docx_paragraph_table('Zahlenschlüssel zur Bewertung von SW Einheiten. * aggregiert über alle Schichten; ** älteste Schicht')
 
-                    table = obf_natur.fuc_tbl_sez_mass_ha(mass[0], int(fr[0]))
-                    obf_doc.docx_paragraph_table('Angriffsflächen ' + mass[1] + ' in Hektar, nach Maßnahmenart und Erhaltungszustand ' + obf_fuc.name_code(fr)[1])
-                    obf_doc.docx_table_x(table, Cm(3), Cm(3), header_rep = True, header = 'Angriffsflächen nach Schutzwalderhaltungszustand [ha] - ' + obf_fuc.name_code(fr)[0], font_size = 7, autofit = True)
-                    obf_doc.doc.add_paragraph('')
+                # add table Zahlenschlüssel
+                d = {'Anzahl der Schichten': ['≥ 3', '2', '1'], 'Bewertung': ['+1', '0', '-1']}
+                df0 = pd.DataFrame(data=d)
+                obf_doc.docx_table_stoe(df0, Cm(3), Cm(3))
 
-                if mass[0] != 'WP':
-                    for fr in obf_fuc.loop_fr():
-                        table = obf_natur.fuc_tbl_sez_mass_v(mass[0], int(fr[0]))
-                        obf_doc.docx_paragraph_table('Holzanfall ' + mass[1] + ' in Erntefestmeter nach Erhaltungszustand und Rückungsart ' + obf_fuc.name_code(fr)[1])
-                        x = obf_doc.get_x('Schutzwalderhaltungszustand')
-                        obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Holzanfall nach Schutzwalderhaltungszustand [Efm]', font_size = 7, autofit = True)
-                        obf_doc.doc.add_paragraph('')
+                d = {'Bestockungsgrad*': ['> 0,6', '> 0,4 bis ≤ 0,6', '≤ 0,4'], 'Bewertung': ['+1', '0', '-1']}
+                df1 = pd.DataFrame(data=d)
+                obf_doc.docx_table_stoe(df1, Cm(3), Cm(3))
 
+                d = {'Maximales Schichtalter**': ['≤ 140 Jahren', '> 140 bis ≤ 200', '> 200 Jahre'], 'Bewertung': ['+1', '0', '-1']}
+                df2 = pd.DataFrame(data=d)
+                obf_doc.docx_table_stoe(df2, Cm(3), Cm(3))
+
+                d = {'Geländeneigung': ['≤ 70 %', '> 70 und ≤ 100 %', '> 100 %'], 'Bewertung': ['+1', '0', '-1']}
+                df3 = pd.DataFrame(data=d)
+                obf_doc.docx_table_stoe(df3, Cm(3), Cm(3))
+
+                d = {'Schichtanteil bis max. 40 Jahre*': ['> 10 %', '≥ 1 bis ≤ 10 %', '< 1 %'], 'Bewertung': ['+1', '0', '-1']}
+                df4 = pd.DataFrame(data=d)
+                obf_doc.docx_table_stoe(df4, Cm(3), Cm(3))
+                obf_doc.doc.add_paragraph('')
+
+                # add standard text
+                obf_text.fuc_txt_sez_met_2(obf_doc.doc)
+                obf_doc.doc.add_paragraph('')
                 obf_doc.doc.add_page_break()
 
+                ###-----------------------------------------------------------------------------------------------------------------###
+                ###   9.2.2 Ergebnisse
+                ###-----------------------------------------------------------------------------------------------------------------###
 
-            #x = obf_doc.get_x('SW', obf_fuc.data_wo_fl[obf_fuc.data_wo_fl['Bewirtschaftungsform']=='S']['Ertragssituation'].unique(), obf_fuc.dic.to)
-            #obf_doc.docx_table_3x(table, x, header_rep = True, header = i[1] + 'fläche', font_size = 7, autofit = True)
-            #obf_doc.doc.add_paragraph('')
+                obf_doc.doc.add_heading('Ergebnisse', 3)
+                obf_doc.doc.add_paragraph('')
 
-            #if 'SAT' in
-            #obf_doc.doc.add_heading('Saatgutbestände', 2)
+                obf_doc.doc.add_heading('Erhaltungszustand', 4)
+                obf_doc.doc.add_paragraph('')
 
-                #obf_doc.doc.add_page_break()
+                # get table
+                table = obf_natur.fuc_tbl_plt_sez_ha()
 
-            # except:
-            #     log = log + "9.2 Schutzwalderhaltungszustand - error occured\n"
-            #     self.save_log(log)
-            # else:
-            #     log = log + "9.2 Schutzwalderhaltungszustand - successful\n"
-            #     self.save_log(log)
+                # add figure
+                obf_doc.doc.add_picture('tempx.png')
+
+                # add Caption to figure
+                obf_doc.docx_paragraph_figure('Schutzwalderhaltungszustand in Hektar in den Revieren. Grün = Schutzwirkung für die nächsten 20 Jahre gegeben; Gelb = Schutzwirkung noch gegeben, negative Entwicklungen sind sichtbar; Rot = Unmittelbarer Handlungsbedarf in den nächsten 10 Jahren.')
+
+                # add Caption to table
+                obf_doc.docx_paragraph_table('Schutzwalderhaltungszustand in Hektar in den Revieren und im Teiloperat ' + str(obf_fuc.dic.to) + '. Grün = Schutzwirkung für die nächsten 20 Jahre gegeben; Gelb = Schutzwirkung noch gegeben, negative Entwicklungen sind sichtbar; Rot = Unmittelbarer Handlungsbedarf in den nächsten 10 Jahren.')
+                # add table
+                #x = obf_doc.get_x('FR', obf_fuc.dic.fr, obf_fuc.dic.to)
+                #obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Schutzwalderhaltungszustand', font_size = 7, autofit = True)
+                obf_doc.docx_table_x(table, Cm(3), Cm(3), header_rep = True, header = 'Schutzwalderhaltungszustand [ha]', font_size = 7, autofit = True)
+                obf_doc.doc.add_paragraph('')
+                obf_doc.doc.add_page_break()
+
+                obf_doc.doc.add_heading('Maßnahmenplanung', 4)
+                obf_doc.doc.add_paragraph('')
+
+                for mass in [['WP', 'Waldpflege'], ['VN', 'Vornutzung'], ['EN', 'Endnutzung']]:
+
+                    obf_doc.doc.add_heading(mass[1], 5)
+                    obf_doc.doc.add_paragraph('')
+
+                    if mass[0] == 'WP':
+                        obf_text.fuc_txt_sez_wp(obf_doc.doc)
+                    elif mass[0] == 'VN':
+                        obf_text.fuc_txt_sez_vn(obf_doc.doc)
+                    elif mass[0] == 'EN':
+                        obf_text.fuc_txt_sez_en(obf_doc.doc)
+
+                    obf_doc.doc.add_paragraph('')
+
+                    for fr in obf_fuc.loop_fr():
+                        print(fr)
+
+                        table = obf_natur.fuc_tbl_sez_mass_ha(mass[0], int(fr[0]))
+                        obf_doc.docx_paragraph_table('Angriffsflächen ' + mass[1] + ' in Hektar, nach Maßnahmenart und Erhaltungszustand ' + obf_fuc.name_code(fr)[1])
+                        obf_doc.docx_table_x(table, Cm(3), Cm(3), header_rep = True, header = 'Angriffsflächen nach Schutzwalderhaltungszustand [ha] - ' + obf_fuc.name_code(fr)[0], font_size = 7, autofit = True)
+                        obf_doc.doc.add_paragraph('')
+
+                    if mass[0] != 'WP':
+                        for fr in obf_fuc.loop_fr():
+                            table = obf_natur.fuc_tbl_sez_mass_v(mass[0], int(fr[0]))
+                            obf_doc.docx_paragraph_table('Holzanfall ' + mass[1] + ' in Erntefestmeter nach Erhaltungszustand und Rückungsart ' + obf_fuc.name_code(fr)[1])
+                            x = obf_doc.get_x('Schutzwalderhaltungszustand')
+                            obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Holzanfall nach Schutzwalderhaltungszustand [Efm]', font_size = 7, autofit = True)
+                            obf_doc.doc.add_paragraph('')
+
+                    obf_doc.doc.add_page_break()
+
+
+                #x = obf_doc.get_x('SW', obf_fuc.data_wo_fl[obf_fuc.data_wo_fl['Bewirtschaftungsform']=='S']['Ertragssituation'].unique(), obf_fuc.dic.to)
+                #obf_doc.docx_table_3x(table, x, header_rep = True, header = i[1] + 'fläche', font_size = 7, autofit = True)
+                #obf_doc.doc.add_paragraph('')
+
+                #if 'SAT' in
+                #obf_doc.doc.add_heading('Saatgutbestände', 2)
+
+                    #obf_doc.doc.add_page_break()
+
+            except:
+                log = log + "9.2 Schutzwalderhaltungszustand - error occured\n"
+                self.save_log(log)
+            else:
+                log = log + "9.2 Schutzwalderhaltungszustand - successful\n"
+                self.save_log(log)
 
 
 

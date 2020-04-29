@@ -35,7 +35,12 @@ class OBFKlima(object):
         table=[]
         for station in stations:
             if station in data.columns:
-                table.append(data[station])
+                if -999 in data[station].values:
+                    print('Station ' + station + ' has missing values')
+                else:
+                    table.append(data[station])
+                    print('append ' + station)
+
         table = pd.concat(table, axis=1)
 
         table = table.T
@@ -63,8 +68,11 @@ class OBFKlima(object):
 
         table=[]
         for station in stations:
-            if station in data.columns:
+            if -999 in data[station].values:
+                print('Station ' + station + ' has missing values')
+            else:
                 table.append(data[station])
+                print('append ' + station)
         table = pd.concat(table, axis=1)
 
         # set x lables
@@ -103,8 +111,11 @@ class OBFKlima(object):
 
         table = []
         for station in stations:
-            if station in data.columns:
+            if -999 in data[station].values:
+                print('Station ' + station + ' has missing values')
+            else:
                 table.append(data[station])
+                print('append ' + station)
         table = pd.concat(table, axis=1)
 
         # set x lables

@@ -1,11 +1,17 @@
 0.1 load data - successful
 0.2 Deckblatt - successful
 1.0 Allgemeines - successful
-2.1 Flächenübersicht - error occured
+2.1 Flächenübersicht - successful
 2.3 Einforstung - successful
 2.4 Fläche und Vorrat nach Altersklassen - successful
 2.5 Baumarten - successful
 2.6 Mittlere Ertragsklasse der Hauptbaumarten - successful
+3.1 Seehöhe | 3.2 Exposition | 3.3 Neigung - successful
+3.4 Klima - eerror occured
+3.5 Standort - successful
+3.6 Wuchsgebiete - successful
+3.7 Herkunftsgebiete und Höhenstufen - successful
 9.0 Wirtschaftsbeschränkungen - successful
+9.2 Schutzwalderhaltungszustand - successful
 12.0 Anhang - successful
 
