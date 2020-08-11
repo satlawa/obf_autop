@@ -45,28 +45,28 @@ class OBFFlaechentabelle(object):
         table['fl_ngp'] = table.loc[(table['Nebengrund Art']==5) | (table['Nebengrund Art']==6),'Fläche in HA']
         table['fl_ngu'] = table.loc[(table['Nebengrund Art']<3) | (table['Nebengrund Art']>6),'Fläche in HA']
 
-        sum_fl = {'Fläche in HA': table['Fläche in HA'].sum(), 'fl_ww': table['fl_ww'].sum(), 'fl_sw': table['fl_sw'].sum(), 'fl_nhb': table['fl_nhb'].sum(), 'fl_ngp': table['fl_ngp'].sum(), 'fl_ngu': table['fl_ngu'].sum()}
+        sum_fl = {'Abteilung': 'Ges.', \
+            'Fläche in HA': table['Fläche in HA'].sum(), 'fl_ww': table['fl_ww'].sum(), \
+            'fl_sw': table['fl_sw'].sum(), 'fl_nhb': table['fl_nhb'].sum(), \
+            'fl_ngp': table['fl_ngp'].sum(), 'fl_ngu': table['fl_ngu'].sum()}
+
+        table = table.fillna('-')
+        table[['Abteilung', 'Unterabteil.', 'Teilfl.', 'WE-Typ', 'Betriebsklasse', 'Umtriebszeit', 'Nebengrund Art']] = \
+        table[['Abteilung', 'Unterabteil.', 'Teilfl.', 'WE-Typ', 'Betriebsklasse', 'Umtriebszeit', 'Nebengrund Art']].astype(str)
+
+        table['Betriebsklasse'] = table['Betriebsklasse'].str.replace('.0', '', regex=False)
+        table['Nebengrund Art'] = table['Nebengrund Art'].str.replace('.0', '', regex=False)
+
         sum_df = pd.DataFrame(data=sum_fl, index = ["Ges."])
+        sum_df = sum_df.round(2)
         table = table.append(sum_df, sort=False)
         table.columns = ['FR', 'Abt', 'UAbt', 'Tfl', 'WE Typ', 'BKL', 'UZ', 'NG Typ', 'EtrS', \
-        'BW Typ', 'SW Typ', 'Fläche Ges', 'Fläche WW', 'Fläche SW', 'Fläche NHB', 'Fläche pNG', 'Fläche uNG']
+        'BW Typ', 'SW Typ', 'Fl Ges', 'Fl WW', 'Fl SW', 'Fl NHB', 'Fl pNG', 'Fl uNG']
         table = table.reindex(columns= ['Abt', 'UAbt', 'Tfl', 'WE Typ', 'BKL', 'UZ', 'EtrS', \
-        'BW Typ', 'SW Typ', 'NG Typ', 'Fläche WW', 'Fläche SW', 'Fläche NHB', 'Fläche pNG', 'Fläche uNG', 'Fläche Ges'])
+        'BW Typ', 'SW Typ', 'NG Typ', 'Fl WW', 'Fl SW', 'Fl NHB', 'Fl pNG', 'Fl uNG', 'Fl Ges'])
 
-        table = table.round(2)
+        #table = table.round(2)
 
-        #table["FR"] = pd.to_numeric(table["FR"])
-        table["Abt"] = table["Abt"].astype(int)
-        table["Tfl"] = table["Tfl"].astype(int)
-        table["BKL"] = table["BKL"].astype(int)
-        table["UZ"] = table["UZ"].astype(int)
-        table["NG Typ"] = table["NG Typ"].astype(int)
-
-        #table["Abt"] = pd.to_numeric(table["Abt"])
-        #table["Tfl"] = pd.to_numeric(table["Tfl"])
-        #table["BKL"] = pd.to_numeric(table["BKL"])
-        #table["UZ"] = pd.to_numeric(table["UZ"])
-        #table["NG Typ"] = pd.to_numeric(table["NG Typ"])
-        #table = table.fillna('-')
+        table = table.fillna('-')
 
         return table
