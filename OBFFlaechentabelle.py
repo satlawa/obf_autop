@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from OBFDictionary import OBFDictionary
+
 # TODO
 # read in data
 # filter data
@@ -26,10 +28,40 @@ class OBFFlaechentabelle(object):
         # get Forstreviere
         self.fr = np.sort(self.data_wo_fl['Forstrevier'].unique())
 
+        self.dic = OBFDictionary()
+        self.dictionary()
+
         # get Abteilungen for every Forstrevier
         self.fr_abt = []
         for f in self.fr:
             self.fr_abt.append(np.sort(self.data_wo_fl.loc[self.data_wo_fl['Forstrevier']==f,'Abteilung'].unique()))
+
+
+    def dictionary(self):
+
+        # get Teiloperat
+        self.dic.set_to(self.data['Teiloperats-ID'].unique()[0])
+        # get Forstbetrieb
+        self.dic.set_fb(self.data['Forstbetrieb'].unique()[0])
+
+        # get Laufzeit
+        #x = self.data['Beg. Laufzeit'].iloc[0].to_pydatetime()
+        x = self.data['Beg. Laufzeit'].iloc[0][-4:]
+        y = self.data['Ende Laufzeit'].iloc[0][-4:]
+        self.dic.set_laufzeit_begin(x)
+        self.dic.set_laufzeit_end(y)
+        self.dic.set_laufzeit(x + '-' + y)
+
+        x = np.sort(self.data['Forstrevier'].unique())
+        self.dic.set_fr(x[x.nonzero()])
+        x = np.sort(self.data['Umtriebszeit'].unique())
+        self.dic.set_uz(x[x.nonzero()])
+        x = np.sort(self.data['Nutzdringlichkeit'].unique())
+        self.dic.set_dring(x[x.nonzero()])
+        x[x.nonzero()]
+
+        # set fr dict
+        self.dic.set_dic_fr()
 
 
     def create_table(self, fr, abt):
