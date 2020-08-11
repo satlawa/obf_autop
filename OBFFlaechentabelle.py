@@ -92,10 +92,10 @@ class OBFFlaechentabelle(object):
         sum_df = pd.DataFrame(data=sum_fl, index = ["Ges."])
         sum_df = sum_df.round(2)
         table = table.append(sum_df, sort=False)
-        table.columns = ['FR', 'Abt', 'UAbt', 'Tfl', 'WE Typ', 'BKL', 'UZ', 'NG Typ', 'EtrS', \
-        'BW Typ', 'SW Typ', 'Fl Ges', 'Fl WW', 'Fl SW', 'Fl NHB', 'Fl pNG', 'Fl uNG']
-        table = table.reindex(columns= ['Abt', 'UAbt', 'Tfl', 'WE Typ', 'BKL', 'UZ', 'EtrS', \
-        'BW Typ', 'SW Typ', 'NG Typ', 'Fl WW', 'Fl SW', 'Fl NHB', 'Fl pNG', 'Fl uNG', 'Fl Ges'])
+        table.columns = ['FR', 'Abt', 'UAbt', 'TF', 'WE', 'BKL', 'UZ', 'NG', 'ES', \
+        'BW', 'SW', 'Fl Ges', 'Fl WW', 'Fl SW', 'Fl NHB', 'Fl pNG', 'Fl uNG']
+        table = table.reindex(columns= ['Abt', 'UAbt', 'TF', 'WE', 'BKL', 'UZ', 'ES', \
+        'BW', 'SW', 'NG', 'Fl WW', 'Fl SW', 'Fl NHB', 'Fl pNG', 'Fl uNG', 'Fl Ges'])
 
         #table = table.round(2)
 

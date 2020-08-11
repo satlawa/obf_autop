@@ -38,6 +38,7 @@ class OBFFlTab(object):
         print('-                                                   -')
         print('-----------------------------------------------------')
         print('SAP Rohdaten:       to_' + self.to_now + '_sap.XLS:             ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap.XLS'))))
+        #print('SAP Rohdaten:       Flurnamen_' + str(self.laufzeit_begin-1) + '.xlsx:             ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap.XLS'))))
         print('-----------------------------------------------------')
         print('Zusatz Dateien:     dict:                        ' + str(self.check_files_background()))
         print('-----------------------------------------------------')
@@ -61,6 +62,7 @@ class OBFFlTab(object):
 
         return exists
 
+
     def run(self):
         '''
             run program
@@ -82,13 +84,19 @@ class OBFFlTab(object):
         #-----------------------------------------------------------------------------------------
         path_dir = os.path.join(self.data_path, 'TO' + self.to_now)
         path_dict = os.path.join(self.data_path, 'dict')
+        path_flur = os.path.join(self.data_path, 'flurnamen')
 
         path_data = path_dir + '/to_' + self.to_now + '_sap.XLS'
+
         obf_flt = OBFFlaechentabelle(pd.read_csv(path_data, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
 
         obf_dic = OBFDictionary()
 
         obf_doc = OBFDocX(Document(path_dict + '/templet_xx.docx'))
+
+#xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        path_flur = path_flur + '/Flurnamen_2019.xlsx'
+        data_flur = pd.read_excel(path_flur)
 
 
         #######################
@@ -122,7 +130,7 @@ class OBFFlTab(object):
 
         for fr in obf_flt.dic.fr:
 
-            p = obf_doc.doc.add_paragraph().add_run(obf_flt.dic.dic_num_fr[fr])
+            p = obf_doc.doc.add_paragraph().add_run('FR ' + str(fr) + ' ' + obf_flt.dic.dic_num_fr[fr])
             p.font.name = 'Verdana'
             p.font.size = Pt(20)
 
@@ -141,7 +149,7 @@ class OBFFlTab(object):
         for i in range(10-(obf_flt.dic.fr.shape[0]*2)):
             obf_doc.doc.add_paragraph('')
 
-        p = obf_doc.doc.add_paragraph().add_run('Für die Unternehmensleitung                       Für der Forstbetrieb')
+        p = obf_doc.doc.add_paragraph().add_run('Für die Unternehmensleitung                       Für den Forstbetrieb')
         p.font.name = 'Verdana'
         p.font.size = Pt(12)
 
@@ -154,7 +162,7 @@ class OBFFlTab(object):
         for i in range(3):
             obf_doc.doc.add_paragraph('')
 
-        run = obf_doc.doc.add_paragraph('Erstellung vom Teiloperat mit AutOP ').add_run(' Version ' + version)
+        run = obf_doc.doc.add_paragraph('Erstellung der Flächentabellen mit AutOP ').add_run(' Version ' + version)
         font = run.font
         font.name = 'Verdana'
         font.size = Pt(8)
@@ -165,24 +173,24 @@ class OBFFlTab(object):
         obf_doc.doc.add_heading('Abkürzungsverzeichnis', 1)
 
         obf_doc.doc.add_paragraph('')
-        obf_doc.doc.add_paragraph('Die folgenden Abkürzungen werden in den Tabellen verwendet um die Lesbarkeit und Übersicht der Tabellen zu gewähleisten')
+        obf_doc.doc.add_paragraph('Die folgenden Abkürzungen werden in den Tabellen verwendet, um die Lesbarkeit und Übersicht der Tabellen zu gewährleisten.')
         obf_doc.doc.add_paragraph('')
 
         obf_doc.doc.add_heading('Spaltenüberschriften', 2)
 
         obf_doc.doc.add_paragraph('')
-        obf_doc.doc.add_paragraph('Alle nachfolgenden Tabellen verwenden diese Abkürzungen in den Spaltenüberschriften')
+        obf_doc.doc.add_paragraph('Alle nachfolgenden Tabellen verwenden diese Abkürzungen in den Spaltenüberschriften.')
         obf_doc.doc.add_paragraph('')
         obf_doc.doc.add_paragraph('Abt		...	Abteilung')
         obf_doc.doc.add_paragraph('UAbt		...	Unterabteilung')
-        obf_doc.doc.add_paragraph('Tfl		...	Teilfläche')
-        obf_doc.doc.add_paragraph('WE Typ	...	Abteilung')
+        obf_doc.doc.add_paragraph('TF		...	Teilfläche')
+        obf_doc.doc.add_paragraph('WE		...	Wirtschaftseinheits-Typ')
         obf_doc.doc.add_paragraph('BKL		...	Betriebsklasse')
         obf_doc.doc.add_paragraph('UZ		...	Umtriebszeit')
-        obf_doc.doc.add_paragraph('Etrs		...	Ertragssituation')
-        obf_doc.doc.add_paragraph('BW Typ	...	Bewirtschaftungsform')
-        obf_doc.doc.add_paragraph('SW Typ	...	Schutzwaldkategorie')
-        obf_doc.doc.add_paragraph('NG Typ	...	Nebengrund Art')
+        obf_doc.doc.add_paragraph('ES		...	Ertragssituation')
+        obf_doc.doc.add_paragraph('BW		...	Bewirtschaftungsform')
+        obf_doc.doc.add_paragraph('SW		...	Schutzwaldkategorie')
+        obf_doc.doc.add_paragraph('NG		...	Nebengrund Art')
         obf_doc.doc.add_paragraph('Fl WW		...	Wirtschaftswaldfläche')
         obf_doc.doc.add_paragraph('Fl SW		...	Schutzwaldfläche')
         obf_doc.doc.add_paragraph('Fl NHB		...	Nichtholzbodenfläche')
@@ -196,10 +204,10 @@ class OBFFlTab(object):
         obf_doc.doc.add_heading('Abkürzungen von Werten', 2)
 
         obf_doc.doc.add_paragraph('')
-        obf_doc.doc.add_paragraph('Alle nachfolgenden Tabellen verwenden diese Abkürzungen von Werten innerhalb der Tabellen')
+        obf_doc.doc.add_paragraph('Alle nachfolgenden Tabellen verwenden diese Abkürzungen von Werten innerhalb der Tabellen.')
         obf_doc.doc.add_paragraph('')
 
-        p = obf_doc.doc.add_paragraph().add_run('WE Typ')
+        p = obf_doc.doc.add_paragraph().add_run('Wirtschaftseinheits-Typ')
         p.font.bold = True
         obf_doc.doc.add_paragraph('')
         obf_doc.doc.add_paragraph('WO	...	Waldort')
@@ -231,15 +239,15 @@ class OBFFlTab(object):
         p = obf_doc.doc.add_paragraph().add_run('Nebengrund Art')
         p.font.bold = True
         obf_doc.doc.add_paragraph('')
-        obf_doc.doc.add_paragraph('1	...	Standortsschutzwald')
-        obf_doc.doc.add_paragraph('2	...	Bergkiefer (Latschen)')
-        obf_doc.doc.add_paragraph('3	...	Straße (Forststraßen, Schlepperwege')
-        obf_doc.doc.add_paragraph('4	...	')
+        obf_doc.doc.add_paragraph('1	...	Feuchtbiotop')
+        obf_doc.doc.add_paragraph('2	...	Latschenfelder')
+        obf_doc.doc.add_paragraph('3	...	Forststraße')
+        obf_doc.doc.add_paragraph('4	...	Sonstiger Nichtholzboden')
         obf_doc.doc.add_paragraph('5	...	Wiese')
         obf_doc.doc.add_paragraph('6	...	Acker')
-        obf_doc.doc.add_paragraph('7	...	Gewässer (Bäche, Flüsse, Teiche, Seen)')
-        obf_doc.doc.add_paragraph('8	...	Felsen, Geröll')
-        obf_doc.doc.add_paragraph('9	...	')
+        obf_doc.doc.add_paragraph('7	...	Gewässer')
+        obf_doc.doc.add_paragraph('8	...	Ödflächen')
+        obf_doc.doc.add_paragraph('9	...	Sonstiger unproduktiver Nebengrund')
         obf_doc.doc.add_paragraph('')
 
         p = obf_doc.doc.add_paragraph().add_run('Flächen')
@@ -264,27 +272,28 @@ class OBFFlTab(object):
         obf_doc.doc.add_heading('Flächentabellen', 1)
         obf_doc.doc.add_paragraph('')
 
-        for fr in obf_flt.dic.fr:
+        for i,fr in enumerate(obf_flt.dic.fr):
 
             obf_doc.doc.add_heading('FR  ' + str(fr) + ' ' +obf_flt.dic.dic_num_fr[fr], 2)
             obf_doc.doc.add_paragraph('')
 
-            for abt in obf_flt.fr_abt[fr-1][0:3]:
+            for abt in obf_flt.fr_abt[i]:
                 print(abt)
                 table = obf_flt.create_table(fr, abt)
 
                 # add Caption to table
-                obf_doc.docx_paragraph_table('Flächentabelle der Abteilung ' + str(abt) + ', im FR ' + str(fr) + ' ' + obf_flt.dic.dic_num_fr[fr] + ', im FB ' + str(obf_flt.dic.fb) + ' ' + obf_flt.dic.dic_num_fb[obf_flt.dic.fb] + ', Abkürzungen sind im Abkürzungsverzeichins aufgeschlüsselt.')
+                #obf_doc.docx_paragraph_table('Flächentabelle der Abteilung ' + str(abt) + ', im FR ' + str(fr) + ' ' + obf_flt.dic.dic_num_fr[fr] + ', im FB ' + str(obf_flt.dic.fb) + ' ' + obf_flt.dic.dic_num_fb[obf_flt.dic.fb] + ', Abkürzungen sind im Abkürzungsverzeichins aufgeschlüsselt.')
 
                 # add table
-                obf_doc.docx_table_x(table, width1=Cm(1), width2=Cm(1), header_rep=True, header ='Abteilung   '+ str(abt), font_size = 7, autofit = True)
+                flur = data_flur.loc[(data_flur['FB']==obf_flt.dic.fb) & (data_flur['FR']==fr) & (data_flur['ABT']==abt)].values[0,3]
+                obf_doc.docx_table_x(table, width1=Cm(1), width2=Cm(1), header_rep=True, header = 'FR ' + str(fr) + '   |   Abteilung   ' + str(abt) + '   |   ' + flur + '   |   [ha]', font_size = 7, autofit = True)
                 obf_doc.doc.add_paragraph('')
                 obf_doc.doc.add_paragraph('')
 
             obf_doc.doc.add_page_break()
 
         # save the doc
-        path_save = os.path.join(self.data_path, 'flaechentabelle.docx')
+        path_save = os.path.join(self.data_path, 'flaechentabelle' + self.to_now + '.docx')
         obf_doc.doc.save(path_save)
 
         print('end')

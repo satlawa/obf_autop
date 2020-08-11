@@ -260,7 +260,7 @@ class OBFMain(object):
         for i in range(10-(obf_fuc.loop_fr()[1:,0].shape[0]*2)):
             obf_doc.doc.add_paragraph('')
 
-        p = obf_doc.doc.add_paragraph().add_run('Für die Unternehmensleitung                       Für der Forstbetrieb')
+        p = obf_doc.doc.add_paragraph().add_run('Für die Unternehmensleitung                       Für den Forstbetrieb')
         p.font.name = 'Verdana'
         p.font.size = Pt(12)
 
