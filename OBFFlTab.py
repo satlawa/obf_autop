@@ -273,6 +273,7 @@ class OBFFlTab(object):
         obf_doc.doc.add_paragraph('')
 
         for i,fr in enumerate(obf_flt.dic.fr):
+            print('---------------------------   ' + fr '   ---------------------------')
 
             obf_doc.doc.add_heading('FR  ' + str(fr) + ' ' +obf_flt.dic.dic_num_fr[fr], 2)
             obf_doc.doc.add_paragraph('')
