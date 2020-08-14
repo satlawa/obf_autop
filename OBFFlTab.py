@@ -27,6 +27,8 @@ class OBFFlTab(object):
         self.to_now = to_now
         self.check_files_print()
 
+        self.run()
+
 
     def check_files_print(self):
         '''
@@ -273,7 +275,7 @@ class OBFFlTab(object):
         obf_doc.doc.add_paragraph('')
 
         for i,fr in enumerate(obf_flt.dic.fr):
-            print('---------------------------   ' + fr '   ---------------------------')
+            print('---------------------------   ' + str(fr) + '   ---------------------------')
 
             obf_doc.doc.add_heading('FR  ' + str(fr) + ' ' +obf_flt.dic.dic_num_fr[fr], 2)
             obf_doc.doc.add_paragraph('')
@@ -294,7 +296,7 @@ class OBFFlTab(object):
             obf_doc.doc.add_page_break()
 
         # save the doc
-        path_save = os.path.join(self.data_path, 'flaechentabelle' + self.to_now + '.docx')
+        path_save = os.path.join(self.data_path, 'flaechentabelle_' + self.to_now + '.docx')
         obf_doc.doc.save(path_save)
 
         print('end')
