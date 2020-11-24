@@ -40,7 +40,7 @@ class OBFFlTab(object):
         print('-                                                   -')
         print('-----------------------------------------------------')
         print('SAP Rohdaten:       to_' + self.to_now + '_sap.XLS:             ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap.XLS'))))
-        #print('SAP Rohdaten:       Flurnamen_' + str(self.laufzeit_begin-1) + '.xlsx:             ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap.XLS'))))
+        print('SAP Flurnamen:      to_' + self.to_now + '_flurnamen.xlsx:      ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_flurnamen.xlsx'))))
         print('-----------------------------------------------------')
         print('Zusatz Dateien:     dict:                        ' + str(self.check_files_background()))
         print('-----------------------------------------------------')
@@ -88,6 +88,7 @@ class OBFFlTab(object):
         path_dict = os.path.join(self.data_path, 'dict')
         path_flur = os.path.join(self.data_path, 'flurnamen')
 
+        #path_data = path_dir + '/to_' + self.to_now + '_sap.XLS'
         path_data = path_dir + '/to_' + self.to_now + '_sap.XLS'
 
         obf_flt = OBFFlaechentabelle(pd.read_csv(path_data, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
@@ -97,8 +98,9 @@ class OBFFlTab(object):
         obf_doc = OBFDocX(Document(path_dict + '/templet_xx.docx'))
 
 #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        path_flur = path_flur + '/Flurnamen_2019.xlsx'
+        path_flur = os.path.join(path_dir, 'to_' + self.to_now + '_flurnamen.xlsx')
         data_flur = pd.read_excel(path_flur)
+        data_flur = data_flur.fillna('')
 
 
         #######################
@@ -274,11 +276,15 @@ class OBFFlTab(object):
         obf_doc.doc.add_heading('Flächentabellen', 1)
         obf_doc.doc.add_paragraph('')
 
+        data_flur_fb = data_flur.loc[(data_flur['FB']==obf_flt.dic.fb)]
+
         for i,fr in enumerate(obf_flt.dic.fr):
             print('---------------------------   ' + str(fr) + '   ---------------------------')
 
             obf_doc.doc.add_heading('FR  ' + str(fr) + ' ' +obf_flt.dic.dic_num_fr[fr], 2)
             obf_doc.doc.add_paragraph('')
+
+            data_flur_fr = data_flur_fb.loc[(data_flur_fb['FR']==fr)]
 
             for abt in obf_flt.fr_abt[i]:
                 print(abt)
@@ -288,7 +294,7 @@ class OBFFlTab(object):
                 #obf_doc.docx_paragraph_table('Flächentabelle der Abteilung ' + str(abt) + ', im FR ' + str(fr) + ' ' + obf_flt.dic.dic_num_fr[fr] + ', im FB ' + str(obf_flt.dic.fb) + ' ' + obf_flt.dic.dic_num_fb[obf_flt.dic.fb] + ', Abkürzungen sind im Abkürzungsverzeichins aufgeschlüsselt.')
 
                 # add table
-                flur = data_flur.loc[(data_flur['FB']==obf_flt.dic.fb) & (data_flur['FR']==fr) & (data_flur['ABT']==abt)].values[0,3]
+                flur = data_flur_fr.loc[(data_flur_fr['ABT']==abt)].values[0,3]
                 obf_doc.docx_table_x(table, width1=Cm(1), width2=Cm(1), header_rep=True, header = 'FR ' + str(fr) + '   |   Abteilung   ' + str(abt) + '   |   ' + flur + '   |   [ha]', font_size = 7, autofit = True)
                 obf_doc.doc.add_paragraph('')
                 obf_doc.doc.add_paragraph('')
