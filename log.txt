@@ -24,7 +24,7 @@
 6.1.2 Vergleich Einschlag zu Hiebssatz - successful
 6.1.3 Schadholz - successful
 6.1.4 Waldbauliche Beurteilung - successful
-6.2.1 Waldbaulicher Hiebssatz - successful
+6.2.1 Waldbaulicher Hiebssatz - error occured
 6.2.2 Berechneter Hiebssatz - successful
 6.2.3 Festgesetzter Hiebssatz - successful
 6.2.5 Vergleich Hiebssatz vergangene und aktuelle Periode - successful
@@ -34,7 +34,7 @@
 7.1 Beurteilung der abgelaufenen Periode - successful
 7.2.1 Bestandesbegründung | 7.2.2 Waldpflege - successful
 7.2.3 Erstdurchforstung - successful
-9.0 Wirtschaftsbeschränkungen - successful
+9.1 Schutzwaldtypen - successful
 9.2 Schutzwalderhaltungszustand - successful
 10.0 Naturschutz - successful
 12.0 Anhang - successful

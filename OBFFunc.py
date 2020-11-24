@@ -295,7 +295,6 @@ class OBFFunc(object):
             for i in kat_all:
 
                 if i in kategorie.tolist():
-                    #print(i)
                     # make table
                     table = pd.pivot_table(self.data_wo_fl[(self.data_wo_fl['Bewirtschaftungsform']=='S') & (self.data_wo_fl['Schutzwaldkategorie']==i)], index=['Forstrevier'],columns = ['Ertragssituation'], \
                                            values=['Fläche in HA'], \
@@ -305,16 +304,13 @@ class OBFFunc(object):
                     # sort by dic
                     table = pd.DataFrame(table, columns=sorted(dic_kat_order, key=dic_kat_order.get))
                     y.append(table)
-                    #print(table)
 
                 else:
-                    print('else')
                     idx = pd.Index(self.data_wo_fl['Forstrevier'].unique().tolist() + ['All'])
                     table = pd.DataFrame(data={'A': [0], 'I': [0], 'All': [0]})
                     table = table.reindex(idx, fill_value=0)
                     table = pd.DataFrame(table, columns=sorted(dic_kat_order, key=dic_kat_order.get))
                     y.append(table)
-                    #print(table)
 
             # make table 'all'
             table = pd.pivot_table(self.data_wo_fl[self.data_wo_fl['Bewirtschaftungsform']=='S'], index=['Forstrevier'],columns = ['Ertragssituation'], \
@@ -1327,10 +1323,10 @@ class OBFFunc(object):
             #i = i.T
             #print('xxx 2 xxx T')
             #print(i)
-            i_unique = i['Bewirtschaftungsform'].unique()
+            #i_unique = i['Bewirtschaftungsform'].unique()
             print('i_unique: ' + i_unique)
             i_uz = i[kind].unique()
-            print('i_uz: ' + str(i_uz))
+            #print('i_uz: ' + str(i_uz))
             for j in ['W','S', 'Ges.']:
                 # add rows
                 if j in i_unique:
@@ -1342,7 +1338,7 @@ class OBFFunc(object):
                 else:
                     tt = t.copy()
                     tt[kind] = i_uz[0]
-                    tt['Bewirtschaftungsform'] = j
+                    tt.loc[:,'Bewirtschaftungsform'] = j
                     #print('xx 12 xx else')
                     #print(tt)
                     x_list_temp.append(tt)

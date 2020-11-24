@@ -51,6 +51,7 @@ dependencies:
   - numpy=1.18.1=py38h4f9e942_0
   - numpy-base=1.18.1=py38hde5b4d6_1
   - openpyxl=3.0.3=py_0
+  - openssl=1.1.1g=h7b6447c_0
   - pandas=1.0.3=py38h0573a6f_0
   - parso=0.6.2=py_0
   - pcre=8.43=he6710b0_0
@@ -87,5 +88,4 @@ dependencies:
     - lxml==4.5.0
     - pillow==7.1.1
     - python-docx==0.8.10
-prefix: /home/philipp/anaconda3/envs/autop
-
+prefix: /home/philipp/miniconda3/envs/autop

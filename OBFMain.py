@@ -718,7 +718,7 @@ class OBFMain(object):
 
 
                 ###   Anteile der Standortseinheiten_hektar   ###
-                print('Anteile der Standortseinheiten_hektar')
+                print('   Anteile der Standortseinheiten_hektar')
 
                 table = obf_fuc.fuc_tbl_plt_standortseinheiten()
 
@@ -740,7 +740,7 @@ class OBFMain(object):
 
 
                 ###   Substrat und Wüchsigkeit im Teiloperat   ###
-                print('Substrat und Wüchsigkeit im Teiloperat')
+                print('   Substrat und Wüchsigkeit im Teiloperat')
 
                 # add heading
                 obf_doc.doc.add_heading('Substrat und Wüchsigkeit im Teiloperat', 3)
@@ -790,8 +790,7 @@ class OBFMain(object):
 
                 # add text for the used Wuchsgebiete (ex. 4.2) from Wuchsgebiete Österreichs Kilian et. al.
                 for i in obf_fuc.dic.wg:
-                    print('text')
-                    print(i)
+                    # insert text
                     obf_text.fuc_txt_wuchsgebiet(obf_doc.doc, i)
 
                 #obf_doc.doc.add_page_break()
@@ -1269,11 +1268,10 @@ class OBFMain(object):
             if dat_es == True:
                 try:
 
+                    print('   Einschlagsübersicht')
                     obf_doc.doc.add_heading('Einschlagsübersicht', 3)
 
                     for i in [['EN','Endnutzung'], ['VN','Vornutzung']]:
-
-                        print(i)
 
                         ### GET 'TO' FROM FILE
                         ### ADD GES = EN + VN
@@ -1317,16 +1315,15 @@ class OBFMain(object):
             if dat_es_hs == True:
                 try:
 
+                    print('   Vergleich Einschlag zu Hiebssatz')
                     obf_doc.doc.add_heading('Vergleich Einschlag zu Hiebssatz', 3)
 
-                    # get the unique FR and rename them
+                    # get unique FR and rename them
                     fr_name = [obf_fuc.dic.dic_num_fr[i] for i in obf_fuc.dic.fr]
                     # set FR in obf_es_hs Class
                     obf_es_hs.set_fr(fr_name)
 
                     for j in ['Altersgruppe 1. Schicht', 'Neigungsgruppe (%)', 'Seehöhen Gruppe', 'Umtriebszeit']:
-
-                        print(j)
 
                         obf_doc.doc.add_heading(obf_fuc.dic.dic_es_hs_head[j], 4)
 
@@ -1354,6 +1351,8 @@ class OBFMain(object):
 
             if dat_zv_ze == True:
                 try:
+
+                    print('   Schadholz')
                     obf_doc.doc.add_heading('Schadholz', 3)
 
                     obf_zv_ze.set_fr(fr_name)
@@ -1408,6 +1407,7 @@ class OBFMain(object):
             ###   6.1.4 Waldbauliche Beurteilung
             ###-----------------------------------------------------------------------------------------------------------------###
 
+            print('   Waldbauliche Beurteilung')
             obf_doc.doc.add_heading('Waldbauliche Beurteilung', 3)
             obf_doc.doc.add_paragraph('***   freier Text   ***')
             obf_doc.doc.add_paragraph('')
@@ -1422,14 +1422,16 @@ class OBFMain(object):
             ###   6.2 Hiebssatzermittlung
             ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
+            print('Hiebssatzermittlung')
             obf_doc.doc.add_heading('Hiebssatzermittlung', 2)
-
 
             ###-----------------------------------------------------------------------------------------------------------------###
             ###   6.2.1 Waldbaulicher Hiebssatz
             ###-----------------------------------------------------------------------------------------------------------------###
 
             try:
+
+                print('   Waldbaulicher Hiebssatz')
                 obf_doc.doc.add_heading('Waldbaulicher Hiebssatz', 3)
 
                 #for i in l:
@@ -1481,6 +1483,7 @@ class OBFMain(object):
             ###   6.2.2 Berechneter Hiebssatz
             ###-----------------------------------------------------------------------------------------------------------------###
 
+            print('   Berechneter Hiebssatz')
             obf_doc.doc.add_heading('Berechneter Hiebssatz', 3)
 
             obf_doc.doc.add_heading('Rechnerische Hiebssatzermittlung', 4)
@@ -1516,13 +1519,13 @@ class OBFMain(object):
             ###   6.2.3 Festgesetzter Hiebssatz
             ###-----------------------------------------------------------------------------------------------------------------###
 
+            print('   Festgesetzter Hiebssatz')
             obf_doc.doc.add_heading('Festgesetzter Hiebssatz', 3)
 
-            # # # check
             if dat_hs == True:
                 try:
 
-                    print('Hiebssätze FR')
+                    print('      Hiebssätze FR')
                     obf_doc.doc.add_paragraph('Die festgesetzten Vor- und Endnutzungs-Hiebsätze im Schutzwald sowie die Vornutzungs-Hiebsätze im Wirtschaftswald entsprechen weitgehend den waldbaulichen Hiebsätzen aus der Taxation. Der festgesetzte Endnutzungs-Hiebssatz im Wirtschaftswald ergeht aus Taxation und Berechnung. Eine Begründung des festgesetzten Hiebssatzes erfolgt in den kommenden Kapiteln.')
 
                     #for i in l:
@@ -1536,7 +1539,7 @@ class OBFMain(object):
                     obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Festgesetzte Hiebssätze [Efm]', font_size = 7, autofit = True)
                     obf_doc.doc.add_paragraph('')
 
-                    print('Hiebssätze UZ')
+                    print('      Hiebssätze UZ')
                     table = obf_hs.fuc_tbl_hs_fest('Umtriebszeit')
 
                     # add paragraph
@@ -1553,7 +1556,6 @@ class OBFMain(object):
 
                     for i in obf_fuc.dic.fr:
 
-                        print(i)
                         table = obf_hs.fuc_tbl_hs_fest_bkl(i)
                         obf_doc.docx_paragraph_table('Festgesetzter dezennaler Hiebssatz in den Betriebsklassen im FR ' + str(i) )
 
@@ -1577,6 +1579,7 @@ class OBFMain(object):
             ###   6.2.4 Hiebssatz Begründung
             ###-----------------------------------------------------------------------------------------------------------------###
 
+            print('   Hiebssatz Begründung')
             obf_doc.doc.add_heading('Hiebssatz Begründung', 3)
             obf_doc.doc.add_paragraph('Hiebssatz Begründung Text')
 
@@ -1585,6 +1588,7 @@ class OBFMain(object):
             ###   6.2.5 Vergleich Hiebssatz vergangene und aktuelle Periode
             ###-----------------------------------------------------------------------------------------------------------------###
 
+            print('   Vergleich Hiebssatz vergangene und aktuelle Periode')
             obf_doc.doc.add_heading('Vergleich Hiebssatz vergangene und aktuelle Periode', 3)
 
             obf_doc.docx_paragraph_table('Vergleich des dezennalen Hiebssatzes in der Vorperiode (HS alt) mit der Periode ' + obf_fuc.dic.laufzeit +' (HS neu)')
@@ -1601,7 +1605,6 @@ class OBFMain(object):
             ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
             print('Ziele und Planung für die Periode ' + obf_fuc.dic.laufzeit)
-
             obf_doc.doc.add_heading('Ziele und Planung für die Periode ' + obf_fuc.dic.laufzeit, 2)
 
             ###-----------------------------------------------------------------------------------------------------------------###
@@ -1609,7 +1612,6 @@ class OBFMain(object):
             ###-----------------------------------------------------------------------------------------------------------------###
 
             print('Waldbauliche Grundsätze')
-
             obf_doc.doc.add_heading('Waldbauliche Grundsätze', 3)
 
             obf_text.fuc_txt_waldbau_grundsatz(obf_doc.doc)
@@ -1624,8 +1626,8 @@ class OBFMain(object):
             ###-----------------------------------------------------------------------------------------------------------------###
 
             try:
-                print('Nutzungsprofil')
 
+                print('   Nutzungsprofil')
                 obf_doc.doc.add_heading('Nutzungsprofil', 3)
 
                 for i in obf_text.fuc_loop_nutz():
@@ -1697,6 +1699,7 @@ class OBFMain(object):
             ###   7.1.1 Waldbauliche Beurteilung
             ###-----------------------------------------------------------------------------------------------------------------###
 
+            print('   Waldbauliche Beurteilung')
             obf_doc.doc.add_heading('Waldbauliche Beurteilung', 3)
             obf_doc.doc.add_paragraph('***   freier Text   ***')
             obf_doc.doc.add_paragraph('')
@@ -1712,7 +1715,7 @@ class OBFMain(object):
 
             if dat_wpplan == True:
                 try:
-                    print('Waldpflegeplan')
+                    print('   Waldpflegeplan')
 
                     # add section break
                     new_section = obf_doc.doc.add_section(WD_SECTION.NEW_PAGE)
@@ -1724,7 +1727,7 @@ class OBFMain(object):
 
                     for i in categories:
 
-                        print(i)
+                        print('      ' + i)
 
                         table = obf_wp.fuc_tbl_waldpflegeplan(i)
 
@@ -1751,7 +1754,6 @@ class OBFMain(object):
             ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
             print('Ziele und Planung für die Periode ' + obf_fuc.dic.laufzeit)
-
             obf_doc.doc.add_heading('Ziele und Planung für die Periode ' + obf_fuc.dic.laufzeit, 2)
 
             ###-----------------------------------------------------------------------------------------------------------------###
@@ -1761,7 +1763,7 @@ class OBFMain(object):
             try:
                 for i in ['Bestandesbegründung', 'Waldpflege']:
 
-                    print(i)
+                    print('   ' + i)
 
                     # add heading
                     obf_doc.doc.add_heading(i, 3)
@@ -1799,7 +1801,7 @@ class OBFMain(object):
             ###-----------------------------------------------------------------------------------------------------------------###
 
             try:
-                print('Erstdurchforstung')
+                print('   Erstdurchforstung')
 
                 obf_doc.doc.add_heading('Erstdurchforstung', 3)
 
@@ -1853,6 +1855,7 @@ class OBFMain(object):
         #######################################################################################################################
         ###   9 Wirtschaftsbeschränkungen
         #######################################################################################################################
+
         print('***   9 Wirtschaftsbeschränkungen   ***')
 
         obf_doc.doc.add_heading('Wirtschaftsbeschränkungen', 1)
@@ -1864,7 +1867,7 @@ class OBFMain(object):
             ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
             try:
-                print('***   9.1 Schutzwaldtypen   ***')
+                print('Schutzwaldtypen')
                 obf_doc.doc.add_heading('Schutzwaldtypen', 2)
 
                 for i in [['0','Schutzwald'],['S','Standortschutzwald'],['O','Objektschutzwald']]:
@@ -1886,10 +1889,10 @@ class OBFMain(object):
                 obf_doc.doc.add_page_break()
 
             except:
-                log = log + "9.0 Wirtschaftsbeschränkungen - error occured\n"
+                log = log + "9.1 Schutzwaldtypen - error occured\n"
                 self.save_log(log)
             else:
-                log = log + "9.0 Wirtschaftsbeschränkungen - successful\n"
+                log = log + "9.1 Schutzwaldtypen - successful\n"
                 self.save_log(log)
 
             ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
@@ -1897,7 +1900,7 @@ class OBFMain(object):
             ###+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
             try:
-                print('***   9.2 Schutzwalderhaltungszustand   ***')
+                print('Schutzwalderhaltungszustand')
 
                 obf_doc.doc.add_heading('Schutzwalderhaltungszustand', 2)
 
@@ -1905,6 +1908,7 @@ class OBFMain(object):
                 ###   9.2.1 Methodik
                 ###-----------------------------------------------------------------------------------------------------------------###
 
+                print('   Methodik')
                 obf_doc.doc.add_heading('Methodik', 3)
                 obf_doc.doc.add_paragraph('')
 
@@ -1946,6 +1950,7 @@ class OBFMain(object):
                 ###   9.2.2 Ergebnisse
                 ###-----------------------------------------------------------------------------------------------------------------###
 
+                print('   Ergebnisse')
                 obf_doc.doc.add_heading('Ergebnisse', 3)
                 obf_doc.doc.add_paragraph('')
 
@@ -1964,8 +1969,6 @@ class OBFMain(object):
                 # add Caption to table
                 obf_doc.docx_paragraph_table('Schutzwalderhaltungszustand in Hektar in den Revieren und im Teiloperat ' + str(obf_fuc.dic.to) + '. Grün = Schutzwirkung für die nächsten 20 Jahre gegeben; Gelb = Schutzwirkung noch gegeben, negative Entwicklungen sind sichtbar; Rot = Unmittelbarer Handlungsbedarf in den nächsten 10 Jahren.')
                 # add table
-                #x = obf_doc.get_x('FR', obf_fuc.dic.fr, obf_fuc.dic.to)
-                #obf_doc.docx_table_3x(table, x, header_rep = True, header = 'Schutzwalderhaltungszustand', font_size = 7, autofit = True)
                 obf_doc.docx_table_x(table, Cm(3), Cm(3), header_rep = True, header = 'Schutzwalderhaltungszustand [ha]', font_size = 7, autofit = True)
                 obf_doc.doc.add_paragraph('')
                 obf_doc.doc.add_page_break()
@@ -2147,7 +2150,7 @@ class OBFMain(object):
 
 
         # save the doc
-        path_save = os.path.join(self.data_path, 'operat_' + str(obf_fuc.dic.to) + '.docx')
+        path_save = os.path.join(self.data_path, 'TO' + str(obf_fuc.dic.to) + '_operat.docx')
         obf_doc.doc.save(path_save)
 
         log = log + "12.0 Anhang - successful\n"

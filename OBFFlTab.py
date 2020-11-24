@@ -302,7 +302,7 @@ class OBFFlTab(object):
             obf_doc.doc.add_page_break()
 
         # save the doc
-        path_save = os.path.join(self.data_path, 'flaechentabelle_' + self.to_now + '.docx')
+        path_save = os.path.join(self.data_path, 'TO' + self.to_now + '_flaechentabelle_.docx')
         obf_doc.doc.save(path_save)
 
         print('end')
