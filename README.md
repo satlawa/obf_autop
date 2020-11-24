@@ -1,6 +1,6 @@
 # obf_autop
-Version 3.5<br>
-Python script that creates a report out of SAP data.
+Version 3.8<br>
+AutOP is a Python script that creates a report (Operat) out of downloaded raw SAP data.
 
 ## Install
 
@@ -16,6 +16,20 @@ pyqt-5.9.2 (optional for GUI)<br>
 
 ### Install instructions
 The easiest way to install all required libraries for running the AutOP code, is by installing conda first and creating a conda environment.
+
+1. download and install conda from:
+  * Anaconda (recomended):  https://www.anaconda.com/products/individual<br>
+or from:<br>
+  * Miniconda :             https://repo.anaconda.com/miniconda/<br>
+  
+2. create an environment<br>
+```conda create --autop myenv```
+
+3. activate the newly created enviroment<br>
+```conda create --autop myenv```
+
+
+
 
 ## Prepare Data
 Download all nescesery data from SAP and put the files in the appropiate folder. Detailed instructions are provided in the data folder.
