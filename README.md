@@ -6,13 +6,13 @@ AutOP is a Python script that creates a report (Operat) out of downloaded raw SA
 
 ### requirements:<br>
 python 3.8.5<br>
-numpy-1.19.2<br>
-pandas-1.1.3<br>
-matplotlib-3.3.2<br>
-openpyxl-3.0.5<br>
-xlrd-1.2.0<br>
-python-docx-0.8.10<br>
-pyqt-5.9.2 (optional for GUI)<br>
+numpy 1.19.2<br>
+pandas 1.1.3<br>
+matplotlib 3.3.2<br>
+openpyxl 3.0.5<br>
+xlrd 1.2.0<br>
+python-docx 0.8.10<br>
+pyqt 5.9.2 (optional for GUI)<br>
 
 ### Install enviroment
 Although it is not strictly necessary to create an enviroment with conda, it is highliy recomended to use conda to assure no problems with already installed package versions. If you have conda (Anaconda or Miniconda) already installed please skip point 1. and continue with 2. If you are unsure if you have conda installed you can use the following command to check:<br>
@@ -30,7 +30,7 @@ or from:<br>
 ```conda activate autop```
 
 4. Install packages for AutOP<br>
-```conda install python=3.8.2 numpy=1.18.1 pandas=1.0.3 matplotlib=3.0.1 openpyxl=3.1.3 xlrd-1.2.0 ipykernel```
+```conda install python=3.8.5 numpy=1.19.2 pandas=1.1.3 matplotlib=3.3.2 openpyxl=3.0.5 xlrd-1.2.0 ipykernel```
 
 5. Install python-docx package<br>
 ```pip install python-docx```
