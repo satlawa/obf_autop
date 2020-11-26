@@ -30,7 +30,7 @@ or from:<br>
 ```conda activate autop```
 
 4. Install packages for AutOP<br>
-```conda install python=3.8.5 numpy=1.19.2 pandas=1.1.3 matplotlib=3.3.2 openpyxl=3.0.5 xlrd-1.2.0 ipykernel```
+```conda install python=3.8.5 numpy=1.19.2 pandas=1.1.3 matplotlib=3.3.2 openpyxl=3.0.5 xlrd=1.2.0 ipykernel```
 
 5. Install python-docx package<br>
 ```pip install python-docx```

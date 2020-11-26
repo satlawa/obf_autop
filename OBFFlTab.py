@@ -27,8 +27,6 @@ class OBFFlTab(object):
         self.to_now = to_now
         self.check_files_print()
 
-        self.run()
-
 
     def check_files_print(self):
         '''
