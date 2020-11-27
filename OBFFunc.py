@@ -32,6 +32,8 @@ class OBFFunc(object):
         self.data = data
 
         self.data = self.data[self.data['GUID']!=0]
+        self.data['Forstrevier'] = self.data['Forstrevier'].fillna(0)
+        self.data['Forstrevier'] = self.data['Forstrevier'].astype(int)
 
         # fill nan with 0
         #self.data = self.data.fillna(0)

@@ -110,7 +110,7 @@ class OBFMain(object):
             run program
         '''
 
-        version = '3.8'
+        version = '3.9'
 
         #-----------------------------------------------------------------------------------------
         #--- check if data exists
