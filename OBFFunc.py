@@ -34,6 +34,12 @@ class OBFFunc(object):
         self.data = self.data[self.data['GUID']!=0]
         self.data['Forstrevier'] = self.data['Forstrevier'].fillna(0)
         self.data['Forstrevier'] = self.data['Forstrevier'].astype(int)
+        self.data['Umtriebszeit'] = self.data['Umtriebszeit'].fillna(0)
+        self.data['Umtriebszeit'] = self.data['Umtriebszeit'].astype(int)
+        self.data['Forstbetrieb'] = self.data['Forstbetrieb'].fillna(0)
+        self.data['Forstbetrieb'] = self.data['Forstbetrieb'].astype(int)
+        #self.data['Teiloperats-ID'] = self.data['Teiloperats-ID'].fillna(0)
+        #self.data['Teiloperats-ID'] = self.data['Teiloperats-ID'].astype(int)
 
         # fill nan with 0
         #self.data = self.data.fillna(0)
