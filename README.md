@@ -1,6 +1,7 @@
-# obf_autop
+# AutOP
+
 Version 3.8<br>
-AutOP is a Python script that creates a report (Operat) out of downloaded raw SAP data.
+AutOP is a Python script that creates a forest management report (Operat) out of downloaded raw SAP data.
 
 ## Install
 
@@ -15,18 +16,18 @@ python-docx 0.8.10<br>
 pyqt 5.9.2 (optional for GUI)<br>
 
 ### Install enviroment
-Although it is not strictly necessary to create an enviroment with conda, it is highliy recomended to use conda to assure no problems with already installed package versions. If you have conda (Anaconda or Miniconda) already installed please skip point 1. and continue with 2. If you are unsure if you have conda installed you can use the following command to check:<br>
+Although it is not strictly necessary to create an environment with conda, it is highly recommended to use conda to assure no problems with already installed package versions. If you have conda (Anaconda or Miniconda) already installed please skip point 1. and continue with 2. If you are unsure if you have conda installed you can use the following command to check:<br>
 ```which conda```
 
 1. Download and install conda from:<br>
   * Anaconda (recommended): https://www.anaconda.com/products/individual<br>
 or from:<br>
   * Miniconda :             https://repo.anaconda.com/miniconda/<br>
-  
+
 2. Create an environment for AutOP<br>
 ```conda create --name autop```
 
-3. Activate the newly created enviroment<br>
+3. Activate the newly created environment<br>
 ```conda activate autop```
 
 4. Install packages for AutOP<br>
@@ -49,11 +50,11 @@ or from:<br>
 2. Make a new directory and navigate to it<br>
 ```mkdir -p Code/python & cd Code/python```
 
-3. Clone the github enviroment (or download the zipped version)<br>
+3. Clone the GitHub environment (or download the zipped version)<br>
 ```git clone https://github.com/satlawa/obf_autop.git```
 
 ## Prepare Data
-Download all nescesery data from SAP and put the files in the appropiate folder.<br>
+Download all necessary data from SAP and put the files in the appropriate folder.<br>
 The folder should have following naming convention: **TOXXXX** where **XXXX** stands for the "Teiloperats-ID" (for example "**TO1284**").<br>
 To create the full report the following data has to be moved into the folder (assuming example "**TO1284**"):<br>
 
@@ -81,14 +82,14 @@ Folder -> dict<br>
 * several static data files
 
 ## Run AutOP
-AutOP can be run within a jupyter notebook or with a light weight GUI.
+AutOP can be run within a Jupyter Notebook or with a light weight GUI.
 
 ### Run with Jupyter Notebook:
 
 1. Start jupyter notebook<br>
 ```jupyter notebook```
 
-2. Usually if the enviroment is called **autop** the right kernel should be picked automatically. In any other case please make sure to use the right kernel by checking the name in the upper right corner. In case a diffrent kernel is active please change to the autop kernel by selecting upper tab<br>
+2. Usually if the environment is called **autop** the right kernel should be picked automatically. In any other case please make sure to use the right kernel by checking the name in the upper right corner. In case a different kernel is active please change to the autop kernel by selecting upper tab<br>
 **Kernel -> Change kernel -> autop**<br>
 
 2. Navigate to obf_autop folder and open<br>
@@ -103,7 +104,7 @@ AutOP can be run within a jupyter notebook or with a light weight GUI.
 
 ### Run with GUI:
 
-activate enviroment<br>
+activate environment<br>
 ```conda activate autop```<br>
 <br>
 navigate to the obf_autop folder<br>
