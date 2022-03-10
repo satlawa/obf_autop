@@ -35,15 +35,13 @@ from OBFDictionary import OBFDictionary
 
 class OBFMain(object):
 
-    def __init__(self, data_path, to_now, to_old, laufzeit_old, klima_stationen, do_sections):
+    def __init__(self, data_path, to_now, to_old, klima_stationen, do_sections):
 
         self.data_path = data_path
         self.to_now = to_now
         self.to_old = to_old
-        self.laufzeit_old = laufzeit_old
         self.do_sections = do_sections
         self.klima_stationen = klima_stationen
-        self.check_files_print()
 
 
     def save_log(self, log):
@@ -76,7 +74,7 @@ class OBFMain(object):
         print('BW Zufällige:       to_' + self.to_now + '_bw_zufaellige.xlsx:  ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_zufaellige.xlsx'))))
         print('BW Waldpflege:      to_' + self.to_now + '_bw_wp.xlsx:          ' + str(os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_wp.xlsx'))))
         print('-----------------------------------------------------')
-        print('SAP Stichprobe:     SPI_' + self.laufzeit_old[5:] + '.txt:                ' + str(os.path.isfile(os.path.join(self.data_path, 'stichprobe', 'SPI_' + self.laufzeit_old[5:] + '.txt'))))
+        print('SAP Stichprobe:     SPI_' + self.fe_year + '.txt:                ' + str(os.path.isfile(os.path.join(self.data_path, 'stichprobe', 'SPI_' + self.fe_year + '.txt'))))
         print('-----------------------------------------------------')
         print('Klima Temperatur:   1_Lufttemperatur.txt:        ' + str(os.path.isfile(os.path.join(self.data_path, 'klima', '1_Lufttemperatur.txt'))))
         print('Klima Niederschlag: 2_Niederschlag.txt:          ' + str(os.path.isfile(os.path.join(self.data_path, 'klima', '2_Niederschlag.txt'))))
@@ -115,11 +113,26 @@ class OBFMain(object):
         #-----------------------------------------------------------------------------------------
         #--- check if data exists
         #-----------------------------------------------------------------------------------------
+
+        # set path dir
+        path_dir = os.path.join(self.data_path, 'TO' + self.to_now)
+        path_dict = os.path.join(self.data_path, 'dict')
+
         # background data
         if self.check_files_background() == False:
-            return('background data is missing, the TO could not be made')
+            return('dict data is missing, the TO could not be made')
+
         # Taxationsdaten
+        # check if file exists
         dat_fuc = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap.XLS'))                # SAP roh
+        # get data
+        path_data = path_dir + '/to_' + self.to_now + '_sap.XLS'
+        obf_fuc = OBFFunc(pd.read_csv(path_data, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
+        # set fe_year
+        self.fe_year = str(int(obf_fuc.data.loc[0,'Beg. Laufzeit'][-4:])-1)
+
+        self.check_files_print()
+
         dat_natur = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_sap_natur.XLS'))        # SAP auswertekategorien
         # Hiebssatzbilanz
         dat_hs = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_hs_bilanz.XLS'))           # HS-Bilanz neu
@@ -133,7 +146,7 @@ class OBFMain(object):
         dat_zv_ze = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_zufaellige.xlsx'))   # BW zufällige
         dat_wpplan = os.path.isfile(os.path.join(self.data_path, 'TO' + self.to_now, 'to_' + self.to_now + '_bw_wp.xlsx'))          # BW waldpflegeplan
         # SPI
-        dat_spi = os.path.isfile(os.path.join(self.data_path, 'stichprobe', 'SPI_' + self.laufzeit_old[5:] + '.txt'))               # SPI
+        dat_spi = os.path.isfile(os.path.join(self.data_path, 'stichprobe', 'SPI_' + self.fe_year + '.txt'))               # SPI
         # Klima
         dat_kima_1 = os.path.isfile(os.path.join(self.data_path, 'klima', '1_Lufttemperatur.txt'))                                  # Klima
         dat_kima_2 = os.path.isfile(os.path.join(self.data_path, 'klima', '2_Niederschlag.txt'))
@@ -143,11 +156,7 @@ class OBFMain(object):
         #-----------------------------------------------------------------------------------------
         #--- get data
         #-----------------------------------------------------------------------------------------
-        path_dir = os.path.join(self.data_path, 'TO' + self.to_now)
-        path_dict = os.path.join(self.data_path, 'dict')
 
-        path_data = path_dir + '/to_' + self.to_now + '_sap.XLS'
-        obf_fuc = OBFFunc(pd.read_csv(path_data, sep='\t', encoding = "ISO-8859-1", decimal=',', error_bad_lines=False))
 
         if dat_hs == True:
             path_hs = path_dir + '/to_' + self.to_now + '_hs_bilanz.XLS'
@@ -180,7 +189,7 @@ class OBFMain(object):
             obf_natur.set_dic(path_dict + '/auswertekat_index.xlsx')
 
         if dat_spi == True:
-            path_spi = os.path.join(self.data_path, 'stichprobe', 'SPI_' + self.laufzeit_old[-4:] + '.txt')
+            path_spi = os.path.join(self.data_path, 'stichprobe', 'SPI_' + self.fe_year + '.txt')
             obf_spi = OBFSpi(pd.read_csv(path_spi, sep='\t', encoding = "ISO-8859-1", decimal=',', thousands='.', skipinitialspace=True, skiprows=3))
 
         if dat_kima == True:
@@ -1131,7 +1140,7 @@ class OBFMain(object):
                     print('Forstschaeden')
                     obf_doc.doc.add_heading('Forstschäden', 2)
                     obf_doc.doc.add_paragraph('')
-                    obf_doc.doc.add_paragraph('Die Auswertungen in diesem Kapitel basieren auf Daten der Stichprobeninventur ' + self.laufzeit_old[-4:] + ' für des Teiloperat ' + str(obf_fuc.dic.to) + '.')
+                    obf_doc.doc.add_paragraph('Die Auswertungen in diesem Kapitel basieren auf Daten der Stichprobeninventur ' + self.fe_year + ' für des Teiloperat ' + str(obf_fuc.dic.to) + '.')
 
                     obf_doc.doc.add_heading('Wildschäden – Verbiss', 3)
                     obf_doc.doc.add_paragraph('*** xAbbildung ***')
